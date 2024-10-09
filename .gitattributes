@@ -1,0 +1,3 @@
+*.xml text eol=lf
+*.xml linguist-language=XML
+*.xml mime-type=application/xml
