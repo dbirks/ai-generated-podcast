@@ -1,4 +1,5 @@
 from feedgen.feed import FeedGenerator
+from datetime import datetime
 
 
 def main():
@@ -28,7 +29,7 @@ def main():
         url = f"{episode_base_url}/{episode['title']}.m4a"
         title = episode["title"]
         description = episode["description"]
-        published_date = episode["published_date"]    
+        published_date = datetime.strptime(episode["published_date"], "%Y-%m-%d")
         print(f"Adding episode: {title}")
 
         fe = fg.add_entry()
