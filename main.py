@@ -35,9 +35,9 @@ def main():
         url = f"{episode_base_url}/{episode['title']}.m4a"
         title = episode["title"]
         description = episode["description"]
-        published_date = pytz.utc.localize(
-            datetime.strptime(episode["published_date"], "%Y-%m-%d")
-        ).astimezone(pytz.timezone("US/Eastern"))
+        published_date = datetime.strptime(
+            episode["published_date"], "%Y-%m-%dT%H:%M:%S%z"
+        )
         print(f"Adding episode: {title}")
 
         fe = fg.add_entry()

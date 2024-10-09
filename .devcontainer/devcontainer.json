@@ -14,7 +14,12 @@
 				"redhat.vscode-xml",
 				"redhat.vscode-yaml",
 				"charliermarsh.ruff"
-			]
+			],
+			"settings": {
+				"python.analysis.languageServerMode": "light"
+			}
+
 		}
+
 	}
 }
