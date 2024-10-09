@@ -12,7 +12,8 @@
 		"vscode": {
 			"extensions": [
 				"redhat.vscode-xml",
-				"redhat.vscode-yaml"
+				"redhat.vscode-yaml",
+				"charliermarsh.ruff"
 			]
 		}
 	}
