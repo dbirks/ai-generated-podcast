@@ -27,6 +27,7 @@ def main():
         url = f"{episode_base_url}/{episode['title']}.m4a"
         title = episode["title"]
         description = episode["description"]
+        print(f"Adding episode: {title}")
 
         fe = fg.add_entry()
         fe.id(url)
@@ -35,6 +36,10 @@ def main():
         fe.enclosure(url, 0, "audio/mp4")
 
     fg.rss_file("rss.xml")
+
+    print("Pasting the generated RSS feed below:")
+    with open("rss.xml", "r") as f:
+        print(f.read())
 
 
 if __name__ == "__main__":
