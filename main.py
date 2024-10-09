@@ -24,6 +24,11 @@ def main():
             "description": "Using RFC 8446 and various blog articles to describe the concept of Perfect Forward Secrecy in TLS 1.3",
             "published_date": "2024-10-08",
         },
+        {
+            "title": "Post-Quantum Algorithms in OpenSSH",
+            "description": "An overview of NIST-approved post-quantum algorithms",
+            "published_date": "2024-10-09",
+        }
     ]
 
     for episode in episodes:
