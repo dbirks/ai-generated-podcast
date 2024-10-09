@@ -28,7 +28,7 @@ def main():
             "title": "Post-Quantum Algorithms in OpenSSH",
             "description": "An overview of NIST-approved post-quantum algorithms",
             "published_date": "2024-10-09",
-        }
+        },
     ]
 
     for episode in episodes:
@@ -37,7 +37,7 @@ def main():
         description = episode["description"]
         published_date = pytz.utc.localize(
             datetime.strptime(episode["published_date"], "%Y-%m-%d")
-        )
+        ).astimezone(pytz.timezone("US/Eastern"))
         print(f"Adding episode: {title}")
 
         fe = fg.add_entry()
