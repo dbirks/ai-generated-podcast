@@ -20,6 +20,7 @@ def main():
         {
             "title": "TLS 1.3 Perfect Forward Secrecy",
             "description": "Using RFC 8446 and various blog articles to describe the concept of Perfect Forward Secrecy in TLS 1.3",
+            "published_date": "2024-10-08",
         },
     ]
 
@@ -27,6 +28,7 @@ def main():
         url = f"{episode_base_url}/{episode['title']}.m4a"
         title = episode["title"]
         description = episode["description"]
+        published_date = episode["published_date"]    
         print(f"Adding episode: {title}")
 
         fe = fg.add_entry()
@@ -34,6 +36,7 @@ def main():
         fe.title(title)
         fe.description(description)
         fe.enclosure(url, 0, "audio/mp4")
+        fe.published(published_date)
 
     fg.rss_file("rss.xml")
 
