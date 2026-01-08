@@ -75,3 +75,39 @@
     Introduction to the MCP Bundle format (.mcpb) for portable local servers.
     Covers the specification, tooling, and how to create distributable
     MCP server packages.
+
+- title: One Year of MCP November 2025 Spec Release
+  published_date: "2026-01-08T10:20:00-05:00"
+  blog_url: https://blog.modelcontextprotocol.io/posts/2025-11-25-first-mcp-anniversary/
+  was_edited: false
+  author: MCP Core Maintainers
+  article_date: "2025-11-25"
+  tech: Claude, OpenAI TTS
+  description: |
+    Celebrating one year of MCP with the November 2025 spec release.
+    Covers new features like OAuth2, streamable HTTP, elicitation,
+    and community growth from 5 to 10,000+ servers.
+
+- title: MCP Apps Extending Servers with Interactive UIs
+  published_date: "2026-01-08T10:30:00-05:00"
+  blog_url: https://blog.modelcontextprotocol.io/posts/2025-11-21-mcp-apps/
+  was_edited: false
+  author: Anton Pidkuiko, Olivier Chafik, et al.
+  article_date: "2025-11-21"
+  tech: Claude, OpenAI TTS
+  description: |
+    Introduction to MCP Apps - extending servers with interactive user
+    interfaces. Covers the apps capability, manifest format, and how
+    to build rich UI experiences within MCP.
+
+- title: Introducing the MCP Registry
+  published_date: "2026-01-08T10:40:00-05:00"
+  blog_url: https://blog.modelcontextprotocol.io/posts/2025-09-08-mcp-registry-preview/
+  was_edited: false
+  author: David Soria Parra, Adam Jones, et al.
+  article_date: "2025-09-08"
+  tech: Claude, OpenAI TTS
+  description: |
+    Launching the MCP Registry - a central hub for discovering and
+    sharing MCP servers. Covers the registry API, submission process,
+    and plans for the ecosystem.

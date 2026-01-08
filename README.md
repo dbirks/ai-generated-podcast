@@ -4,7 +4,7 @@
 
 ## AI-Generated Podcast
 
-Generates podcast audio from blog posts using Claude for text cleanup and ElevenLabs for TTS.
+Generates podcast audio from blog posts using Claude for text cleanup and OpenAI/ElevenLabs for TTS.
 
 **RSS feed:** https://dbirks.github.io/ai-generated-podcast/rss.xml
 
@@ -18,14 +18,32 @@ cp .env.example .env
 # Edit .env with your API keys
 ```
 
+## Environment Variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `OPENAI_API_KEY` | Yes* | OpenAI API key for TTS |
+| `ELEVENLABS_API_KEY` | Yes* | ElevenLabs API key for TTS |
+| `AZURE_STORAGE_CONNECTION_STRING` | Yes | Azure Blob Storage connection |
+| `OPENAI_VOICE` | No | OpenAI voice (default: `nova`) |
+| `OPENAI_MODEL` | No | OpenAI model (default: `tts-1`) |
+| `VOICE_ID` | No | ElevenLabs voice ID |
+| `MODEL_ID` | No | ElevenLabs model ID |
+
+*At least one TTS provider key required
+
 ## CLI Usage
 
 ```bash
 # Scrape article text from URL (works for most blogs, not Medium)
 uv run main.py scrape https://example.com/post
 
-# Generate audio and upload
+# Generate audio (OpenAI TTS by default)
 uv run main.py tts temp/article.txt -o temp/episode.mp3
+uv run main.py tts temp/article.txt -o temp/episode.mp3 -p elevenlabs  # Use ElevenLabs
+uv run main.py tts temp/article.txt -o temp/episode.mp3 -v alloy       # Different voice
+
+# Upload to Azure
 uv run main.py upload temp/episode.mp3 --name "Episode Title.m4a"
 
 # Manage feed
@@ -44,7 +62,7 @@ Edit `episodes.yaml`:
   was_edited: true
   author: Author Name
   article_date: "2024-10-08"
-  tech: Claude, ElevenLabs TTS
+  tech: Claude, OpenAI TTS
   description: |
     Episode description here.
     Can be multiline.
@@ -55,14 +73,16 @@ Then run `uv run main.py feed` to regenerate the RSS feed.
 ## Architecture
 
 - `main.py` - Typer CLI
+- `scraper.py` - Article extraction from URLs
 - `cleaner.py` - Claude Agent SDK text cleaning
-- `tts.py` - ElevenLabs audio generation (auto-chunks at 10k chars)
+- `tts.py` - OpenAI/ElevenLabs TTS (auto-chunks long text)
 - `storage.py` - Azure Blob Storage upload
 - `feed.py` - RSS feed generation
 - `episodes.yaml` - Episode data
 
 ## Notes
 
-- ElevenLabs has a 10k character limit per request; `tts.py` auto-chunks and concatenates with ffmpeg
+- OpenAI TTS: 4k char limit, $15/1M chars (tts-1) or $30/1M (tts-1-hd)
+- ElevenLabs: 10k char limit, quota-based pricing
 - Medium/similar sites block curl; use browser devtools or manually copy article text
 - Files are MP3 but uploaded with `.m4a` extension for podcast app compatibility
