@@ -12,3 +12,13 @@
   was_edited: false
   description: |
     An overview of NIST-approved post-quantum algorithms
+
+- title: Welcome to Gas Town
+  published_date: "2026-01-08T02:20:00-05:00"
+  blog_url: https://steve-yegge.medium.com/welcome-to-gas-town-4f25ee16dd04
+  was_edited: true
+  description: |
+    Steve Yegge introduces Gas Town, his new orchestrator for running
+    dozens of Claude Code instances in parallel. A deep dive into
+    multi-agent workflows, the MEOW stack, and vibe coding at scale.
+    Lightly edited for language. Generated with ElevenLabs TTS.
