@@ -199,5 +199,47 @@ def list_episodes():
         rprint()
 
 
+@app.command()
+def scrape(
+    url: str = typer.Argument(..., help="URL to scrape"),
+    output: Path = typer.Option(None, "--output", "-o", help="Output file (default: temp/<slug>.txt)"),
+):
+    """Scrape article text from a URL (works for most blogs, not Medium)."""
+    from scraper import scrape_article
+    import re
+
+    rprint(f"Fetching: {url}")
+    text, metadata = scrape_article(url)
+
+    rprint(f"\n[bold]Metadata:[/bold]")
+    for key, value in metadata.items():
+        rprint(f"  {key}: {value}")
+
+    rprint(f"\nArticle length: {len(text)} characters")
+
+    # Determine output path
+    if not output:
+        # Create slug from title or URL
+        title = metadata.get("title", url.split("/")[-1])
+        slug = re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")[:50]
+        output = Path(f"temp/{slug}.txt")
+        output.parent.mkdir(exist_ok=True)
+
+    # Prepend title
+    title = metadata.get("title", "Untitled")
+    full_text = f"{title}\n\n{text}"
+
+    output.write_text(full_text)
+    rprint(f"\n[green]Saved to: {output}[/green]")
+
+    # Print metadata for easy copy to episodes.yaml
+    rprint(f"\n[bold]For episodes.yaml:[/bold]")
+    rprint(f"  blog_url: {url}")
+    if "author" in metadata:
+        rprint(f"  author: {metadata['author']}")
+    if "date" in metadata:
+        rprint(f"  article_date: \"{metadata['date']}\"")
+
+
 if __name__ == "__main__":
     app()

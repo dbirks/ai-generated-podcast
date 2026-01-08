@@ -21,12 +21,14 @@ cp .env.example .env
 ## CLI Usage
 
 ```bash
-# Full pipeline: clean text, generate audio, upload to Azure, update feed
-uv run main.py episode "Episode Title" --text post.txt --url https://blog.com/post
+# Scrape article text from URL (works for most blogs, not Medium)
+uv run main.py scrape https://example.com/post
 
-# Individual commands
-uv run main.py tts cleaned.txt -o episode.mp3   # Generate audio with ElevenLabs
-uv run main.py upload episode.mp3               # Upload to Azure Blob Storage
+# Generate audio and upload
+uv run main.py tts temp/article.txt -o temp/episode.mp3
+uv run main.py upload temp/episode.mp3 --name "Episode Title.m4a"
+
+# Manage feed
 uv run main.py feed                             # Regenerate RSS feed
 uv run main.py list                             # List all episodes
 ```
