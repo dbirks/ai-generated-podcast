@@ -6,7 +6,7 @@
 
 Generates podcast audio from blog posts using Claude for text cleanup and ElevenLabs for TTS.
 
-**Listen:** [PocketCasts](https://pca.st/lle4pykv)
+**Listen:** [PocketCasts](https://pca.st/lle4pykv) | [RSS](https://dbirks.github.io/ai-generated-podcast/rss.xml)
 
 ## Setup
 
@@ -62,7 +62,3 @@ Then run `uv run main.py feed` to regenerate the RSS feed.
 - ElevenLabs has a 10k character limit per request; `tts.py` auto-chunks and concatenates with ffmpeg
 - Medium/similar sites block curl; use browser devtools or manually copy article text
 - Files are MP3 but uploaded with `.m4a` extension for podcast app compatibility
-
-## Feed URL
-
-https://dbirks.github.io/ai-generated-podcast/rss.xml
