@@ -6,7 +6,9 @@
 
 Generates podcast audio from blog posts using Claude for text cleanup and ElevenLabs for TTS.
 
-**Listen:** [PocketCasts](https://pca.st/lle4pykv) | [RSS](https://dbirks.github.io/ai-generated-podcast/rss.xml)
+**RSS feed:** https://dbirks.github.io/ai-generated-podcast/rss.xml
+
+**Pocket Casts:** https://pocketcasts.com/podcast/ai-generated-podcast/c01659c0-6821-013d-bd77-02e325935ba3
 
 ## Setup
 
