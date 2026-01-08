@@ -8,6 +8,8 @@ Generates podcast audio from blog posts using Claude Code for orchestration and 
 
 **RSS feed:** https://dbirks.github.io/ai-generated-podcast/rss.xml
 
+**Spotify:** https://open.spotify.com/show/7ChYkvtx2lftMXIaouaIKN
+
 **Pocket Casts:** https://pocketcasts.com/podcast/ai-generated-podcast/c01659c0-6821-013d-bd77-02e325935ba3
 
 ## How It Works
