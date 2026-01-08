@@ -22,6 +22,9 @@ class Episode:
     description: str
     blog_url: str | None = None
     was_edited: bool = False
+    author: str | None = None
+    article_date: str | None = None
+    tech: str | None = None
 
 
 def load_episodes(path: Path = Path("episodes.yaml")) -> list[Episode]:
@@ -42,6 +45,9 @@ def load_episodes(path: Path = Path("episodes.yaml")) -> list[Episode]:
             description=item["description"].strip(),
             blog_url=item.get("blog_url"),
             was_edited=item.get("was_edited", False),
+            author=item.get("author"),
+            article_date=item.get("article_date"),
+            tech=item.get("tech"),
         ))
 
     return episodes
@@ -59,6 +65,9 @@ def save_episodes(episodes: list[Episode], path: Path = Path("episodes.yaml")):
             "published_date": ep.published_date.isoformat(),
             "blog_url": ep.blog_url,
             "was_edited": ep.was_edited,
+            "author": ep.author,
+            "article_date": ep.article_date,
+            "tech": ep.tech,
             "description": ep.description + "\n",  # literal block style
         }
         data.append(item)
@@ -72,6 +81,26 @@ def add_episode(episode: Episode, path: Path = Path("episodes.yaml")):
     episodes = load_episodes(path)
     episodes.append(episode)
     save_episodes(episodes, path)
+
+
+def format_description(episode: Episode) -> str:
+    """Format episode description with metadata."""
+    lines = [episode.description]
+
+    has_metadata = episode.author or episode.article_date or episode.blog_url or episode.tech
+    if has_metadata:
+        lines.append("")  # blank line before metadata
+
+    if episode.author:
+        lines.append(f"Author: {episode.author}")
+    if episode.article_date:
+        lines.append(f"Date: {episode.article_date}")
+    if episode.tech:
+        lines.append(f"Tech: {episode.tech}")
+    if episode.blog_url:
+        lines.append(f"Original: {episode.blog_url}")
+
+    return "\n".join(lines)
 
 
 def generate_feed(episodes: list[Episode] | None = None) -> str:
@@ -97,7 +126,7 @@ def generate_feed(episodes: list[Episode] | None = None) -> str:
         fe = fg.add_entry()
         fe.id(url)
         fe.title(episode.title)
-        fe.description(episode.description)
+        fe.description(format_description(episode))
         fe.enclosure(url, 0, "audio/mp4")
         fe.published(episode.published_date)
 

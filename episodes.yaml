@@ -17,18 +17,24 @@
   published_date: "2026-01-08T02:20:00-05:00"
   blog_url: https://steve-yegge.medium.com/welcome-to-gas-town-4f25ee16dd04
   was_edited: true
+  author: Steve Yegge
+  article_date: "2026-01-07"
+  tech: Claude, ElevenLabs TTS
   description: |
     Steve Yegge introduces Gas Town, his new orchestrator for running
     dozens of Claude Code instances in parallel. A deep dive into
     multi-agent workflows, the MEOW stack, and vibe coding at scale.
-    Lightly edited for language. Generated with ElevenLabs TTS.
+    Lightly edited for language.
 
 - title: The Future of Coding Agents
   published_date: "2026-01-08T02:40:00-05:00"
   blog_url: https://steve-yegge.medium.com/the-future-of-coding-agents-e9451a84207c
   was_edited: true
+  author: Steve Yegge
+  article_date: "2026-01-06"
+  tech: Claude, ElevenLabs TTS
   description: |
     Steve Yegge shares predictions on IDEs, big companies, and the
     future of coding agents. Covers Gas Town's backstory, why Go won
     over TypeScript, and why colonies will beat solo workers.
-    Lightly edited for language. Generated with ElevenLabs TTS.
+    Lightly edited for language.
