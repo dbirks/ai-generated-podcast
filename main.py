@@ -16,7 +16,7 @@ from pathlib import Path
 import typer
 from rich import print as rprint
 
-from cleaner import clean_text_sync, CleanResult
+from cleaner import clean_file_sync, CleanResult
 from feed import Episode, add_episode, load_episodes, write_feed, BLOB_BASE_URL
 from storage import upload_blob
 from tts import generate_audio
@@ -49,6 +49,9 @@ def episode(
     skip_upload: bool = typer.Option(False, "--skip-upload", help="Skip Azure upload"),
 ):
     """Full pipeline: clean text, generate audio, upload, add to feed."""
+    import shutil
+    import tempfile
+
     rprint(f"[bold]Creating episode:[/bold] {title}")
 
     # Read text
@@ -59,13 +62,19 @@ def episode(
     was_edited = False
     if not skip_clean:
         rprint("\n[bold]Cleaning text with Claude...[/bold]")
-        result: CleanResult = clean_text_sync(text, model=model)
-        text = result.cleaned_text
+        # Copy to temp file for cleaning
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False) as tmp:
+            tmp.write(text)
+            tmp_path = Path(tmp.name)
+
+        result: CleanResult = clean_file_sync(tmp_path, model=model)
+        text = tmp_path.read_text()  # Read the cleaned version
         was_edited = result.was_edited
         if was_edited:
             rprint(f"  Edited: {result.changes_made}")
         else:
             rprint("  No changes needed")
+        tmp_path.unlink()  # Clean up temp file
 
     # Add intro
     intro = build_intro(url, was_edited)
@@ -107,25 +116,34 @@ def episode(
 @app.command()
 def clean(
     text_file: Path = typer.Argument(..., help="Path to text file to clean"),
-    output: Path | None = typer.Option(None, "--output", "-o", help="Output file (default: stdout)"),
+    output: Path | None = typer.Option(None, "--output", "-o", help="Output file (default: edit in place)"),
     model: str = typer.Option("sonnet", "--model", "-m", help="Claude model to use"),
 ):
-    """Clean profanity from text using Claude."""
-    text = text_file.read_text()
-    rprint(f"Cleaning {len(text)} characters with Claude ({model})...")
+    """Clean profanity from text using Claude (edits file in place)."""
+    import shutil
 
-    result = clean_text_sync(text, model=model)
+    # Determine target file
+    if output:
+        shutil.copy(text_file, output)
+        target = output
+        rprint(f"Copied {text_file} → {output}")
+    else:
+        target = text_file
+
+    text = target.read_text()
+    rprint(f"Cleaning {len(text)} characters with Claude ({model})...")
+    rprint("[dim]Claude will use Edit tool for surgical changes...[/dim]")
+
+    result = clean_file_sync(target, model=model)
 
     if result.was_edited:
-        rprint(f"[yellow]Edited:[/yellow] {result.changes_made}")
+        rprint(f"[yellow]Edited:[/yellow]")
+        for change in result.changes_made:
+            rprint(f"  - {change}")
     else:
         rprint("[green]No changes needed[/green]")
 
-    if output:
-        output.write_text(result.cleaned_text)
-        rprint(f"Saved to: {output}")
-    else:
-        print(result.cleaned_text)
+    rprint(f"[green]File updated: {target}[/green]")
 
 
 @app.command()

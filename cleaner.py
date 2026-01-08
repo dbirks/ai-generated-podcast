@@ -1,7 +1,7 @@
 """Text cleaning using Claude Agent SDK."""
 
-import json
 from dataclasses import dataclass
+from pathlib import Path
 
 import anyio
 from claude_agent_sdk import query, ClaudeAgentOptions
@@ -9,34 +9,37 @@ from claude_agent_sdk import query, ClaudeAgentOptions
 
 @dataclass
 class CleanResult:
-    cleaned_text: str
+    file_path: Path
     was_edited: bool
     changes_made: list[str]
 
 
-async def clean_text(text: str, model: str = "sonnet") -> CleanResult:
+async def clean_file(file_path: Path, model: str = "sonnet") -> CleanResult:
     """
-    Clean profanity from text using Claude Agent SDK.
+    Clean profanity from a file using Claude Agent SDK.
 
-    Uses your existing Claude Code subscription - no separate API key needed.
+    Uses Claude Code's normal permission flow - will prompt for Edit tool usage.
+    Makes surgical changes to the file in place using the Edit tool.
     """
-    prompt = f"""Clean any profanity or inappropriate language from this text while preserving its meaning and tone.
-Replace profane words with family-friendly alternatives that sound natural when read aloud.
+    abs_path = file_path.resolve()
 
-Return your response as JSON with this exact format:
-{{
-    "cleaned_text": "the cleaned version of the text",
-    "was_edited": true or false,
-    "changes_made": ["list of changes if any"]
-}}
+    prompt = f"""Read the file at {abs_path} and scan it for any profanity or inappropriate language.
 
-Text to clean:
-{text}"""
+For each instance found, use the Edit tool to replace it with a family-friendly alternative that sounds natural when read aloud.
+
+Be extremely conservative - ONLY replace actual profanity/swear words. Keep everything else exactly as written.
+
+After making all edits, output a summary of changes made in this format:
+CHANGES_MADE:
+- "original word" → "replacement"
+- ...
+
+If no profanity was found, output:
+CHANGES_MADE: none"""
 
     options = ClaudeAgentOptions(
         model=model,
-        output_format="text",
-        session_persistence=False,
+        max_turns=50,  # Allow multiple edit operations
     )
 
     response_parts = []
@@ -45,33 +48,26 @@ Text to clean:
 
     response_text = "".join(response_parts).strip()
 
-    # Extract JSON from response (may be wrapped in code blocks)
-    json_str = response_text
-    if "```json" in response_text:
-        start = response_text.find("```json") + 7
-        end = response_text.find("```", start)
-        json_str = response_text[start:end].strip()
-    elif "```" in response_text:
-        start = response_text.find("```") + 3
-        end = response_text.find("```", start)
-        json_str = response_text[start:end].strip()
+    # Parse changes from response
+    changes_made = []
+    was_edited = False
 
-    try:
-        data = json.loads(json_str)
-        return CleanResult(
-            cleaned_text=data.get("cleaned_text", text),
-            was_edited=data.get("was_edited", False),
-            changes_made=data.get("changes_made", []),
-        )
-    except json.JSONDecodeError:
-        print(f"Warning: Could not parse JSON. Raw output:\n{response_text}")
-        return CleanResult(
-            cleaned_text=response_text,
-            was_edited=False,
-            changes_made=[],
-        )
+    if "CHANGES_MADE:" in response_text:
+        changes_section = response_text.split("CHANGES_MADE:")[-1].strip()
+        if changes_section.lower() != "none":
+            was_edited = True
+            for line in changes_section.split("\n"):
+                line = line.strip()
+                if line.startswith("-") and "→" in line:
+                    changes_made.append(line[1:].strip())
+
+    return CleanResult(
+        file_path=abs_path,
+        was_edited=was_edited,
+        changes_made=changes_made,
+    )
 
 
-def clean_text_sync(text: str, model: str = "sonnet") -> CleanResult:
-    """Synchronous wrapper for clean_text."""
-    return anyio.run(clean_text, text, model)
+def clean_file_sync(file_path: Path, model: str = "sonnet") -> CleanResult:
+    """Synchronous wrapper for clean_file."""
+    return anyio.run(clean_file, file_path, model)
