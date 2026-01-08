@@ -86,6 +86,11 @@ def generate_feed(episodes: list[Episode] | None = None) -> str:
     fg.title(PODCAST_TITLE)
     fg.description(PODCAST_DESCRIPTION)
 
+    # Podcast artwork
+    logo_url = f"{GITHUB_PAGES_URL}/logo.png"
+    fg.image(url=logo_url, title=PODCAST_TITLE, link=GITHUB_PAGES_URL)
+    fg.podcast.itunes_image(logo_url)
+
     for episode in episodes:
         url = f"{BLOB_BASE_URL}/{episode.title}.m4a"
 

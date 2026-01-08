@@ -23,19 +23,23 @@ async def clean_file(file_path: Path, model: str = "sonnet") -> CleanResult:
     """
     abs_path = file_path.resolve()
 
-    prompt = f"""Read the file at {abs_path} and scan it for any profanity or inappropriate language.
+    prompt = f"""Read the file at {abs_path} and scan it for profanity. Make VERY light edits using the Edit tool.
 
-For each instance found, use the Edit tool to replace it with a family-friendly alternative that sounds natural when read aloud.
+Replacements to make:
+- "ass" → "butt"
+- "shit" → "stuff" or "squat" or "nada" (context-dependent)
+- "bullshit" → "nonsense" or "stuff"
+- "hell" → "heck"
+- "damn" → "darn"
+- "F***" or similar censored profanity → remove or reword cleanly
 
-Be extremely conservative - ONLY replace actual profanity/swear words. Keep everything else exactly as written.
+DO NOT change: fart, crap, or other mild words. Keep the author's voice.
 
-After making all edits, output a summary of changes made in this format:
+After making all edits, output:
 CHANGES_MADE:
-- "original word" → "replacement"
-- ...
+- "original" → "replacement"
 
-If no profanity was found, output:
-CHANGES_MADE: none"""
+If nothing needed, output: CHANGES_MADE: none"""
 
     options = ClaudeAgentOptions(
         model=model,
