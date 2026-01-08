@@ -124,3 +124,16 @@
     Covers Category 1-3 companies, Grab's social mission in Southeast Asia,
     Anthropic's safety focus, and why AIs will be on Team Human.
     Lightly edited for language.
+
+- title: A Closer Look at a BGP Anomaly in Venezuela
+  published_date: "2026-01-08T11:30:00-05:00"
+  blog_url: https://blog.cloudflare.com/bgp-route-leak-venezuela/
+  was_edited: false
+  author: Bryton Herdes
+  article_date: "2026-01-06"
+  tech: Claude, OpenAI TTS (cedar)
+  description: |
+    Cloudflare analyzes a BGP route leak in Venezuela. Covers BGP basics,
+    valley-free routing, route leak types, and why this anomaly was likely
+    poor ISP policy rather than malicious activity. Discusses RPKI, ASPA,
+    and RFC9234 for preventing future leaks.
