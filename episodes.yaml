@@ -38,3 +38,16 @@
     future of coding agents. Covers Gas Town's backstory, why Go won
     over TypeScript, and why colonies will beat solo workers.
     Lightly edited for language.
+
+- title: Claude Opus 4.5 and Why Evaluating New LLMs Is Increasingly Difficult
+  published_date: "2026-01-08T09:30:00-05:00"
+  blog_url: https://simonwillison.net/2025/Nov/24/claude-opus/
+  was_edited: false
+  author: Simon Willison
+  article_date: "2025-11-24"
+  tech: Claude, ElevenLabs TTS
+  description: |
+    Simon Willison reviews Claude Opus 4.5 and reflects on the challenge
+    of evaluating frontier LLMs when they differ by single-digit benchmark
+    margins. Covers pricing, new features, prompt injection resistance,
+    and the pelican-riding-a-bicycle test.
