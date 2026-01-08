@@ -22,3 +22,13 @@
     dozens of Claude Code instances in parallel. A deep dive into
     multi-agent workflows, the MEOW stack, and vibe coding at scale.
     Lightly edited for language. Generated with ElevenLabs TTS.
+
+- title: The Future of Coding Agents
+  published_date: "2026-01-08T02:40:00-05:00"
+  blog_url: https://steve-yegge.medium.com/the-future-of-coding-agents-e9451a84207c
+  was_edited: true
+  description: |
+    Steve Yegge shares predictions on IDEs, big companies, and the
+    future of coding agents. Covers Gas Town's backstory, why Go won
+    over TypeScript, and why colonies will beat solo workers.
+    Lightly edited for language. Generated with ElevenLabs TTS.
