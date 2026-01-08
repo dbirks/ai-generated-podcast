@@ -15,8 +15,8 @@ ELEVENLABS_DEFAULT_MODEL = "eleven_multilingual_v2"
 ELEVENLABS_MAX_CHARS = 9000
 
 # OpenAI defaults
-OPENAI_DEFAULT_VOICE = "nova"
-OPENAI_DEFAULT_MODEL = "tts-1"
+OPENAI_DEFAULT_VOICE = "cedar"
+OPENAI_DEFAULT_MODEL = "gpt-4o-mini-tts"
 OPENAI_MAX_CHARS = 4000  # Limit is 4096, leave margin
 
 

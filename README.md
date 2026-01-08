@@ -25,8 +25,8 @@ cp .env.example .env
 | `OPENAI_API_KEY` | Yes* | OpenAI API key for TTS |
 | `ELEVENLABS_API_KEY` | Yes* | ElevenLabs API key for TTS |
 | `AZURE_STORAGE_CONNECTION_STRING` | Yes | Azure Blob Storage connection |
-| `OPENAI_VOICE` | No | OpenAI voice (default: `nova`) |
-| `OPENAI_MODEL` | No | OpenAI model (default: `tts-1`) |
+| `OPENAI_VOICE` | No | OpenAI voice (default: `cedar`) |
+| `OPENAI_MODEL` | No | OpenAI model (default: `gpt-4o-mini-tts`) |
 | `VOICE_ID` | No | ElevenLabs voice ID |
 | `MODEL_ID` | No | ElevenLabs model ID |
 
