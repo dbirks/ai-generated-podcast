@@ -111,3 +111,16 @@
     Launching the MCP Registry - a central hub for discovering and
     sharing MCP servers. Covers the registry API, submission process,
     and plans for the ecosystem.
+
+- title: Cheese Wars Rise of the Vibe Coder
+  published_date: "2026-01-08T11:00:00-05:00"
+  blog_url: https://steve-yegge.medium.com/cheese-wars-rise-of-the-vibe-coder-6839a6b15982
+  was_edited: true
+  author: Steve Yegge
+  article_date: "2025-11-17"
+  tech: Claude, OpenAI TTS (nova)
+  description: |
+    Steve Yegge explores whether humans matter in an AI-driven future.
+    Covers Category 1-3 companies, Grab's social mission in Southeast Asia,
+    Anthropic's safety focus, and why AIs will be on Team Human.
+    Lightly edited for language.
