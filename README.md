@@ -1,66 +1,55 @@
 # AI-Generated Podcast
 
-A Python script that generates an RSS podcast feed for AI-generated audio content.
+Generates podcast audio from blog posts using Claude for text cleanup and ElevenLabs for TTS.
 
-## How it works
-
-1. `main.py` generates an RSS feed from a hardcoded list of episodes
-2. Audio files (.m4a) are hosted on Azure Blob Storage
-3. GitHub Actions automatically deploys the feed to GitHub Pages on every push to main
+**Listen:** [PocketCasts](https://pca.st/lle4pykv)
 
 ## Setup
 
 ```bash
 uv sync
-source .venv/bin/activate
-```
-
-Create a `.env` file with your ElevenLabs API key:
-```bash
 cp .env.example .env
-# Edit .env and add your ELEVENLABS_API_KEY
+# Edit .env with your API keys
 ```
 
-## Generate podcast audio from blog posts
+## CLI Usage
 
 ```bash
-python generate_podcast.py
+# Full pipeline: clean text, generate audio, upload to Azure, update feed
+uv run main.py episode "Episode Title" --text post.txt --url https://blog.com/post
+
+# Individual commands
+uv run main.py clean post.txt                    # Clean profanity with Claude
+uv run main.py tts cleaned.txt -o episode.m4a   # Generate audio with ElevenLabs
+uv run main.py upload episode.m4a               # Upload to Azure Blob Storage
+uv run main.py feed                             # Regenerate RSS feed
+uv run main.py list                             # List all episodes
 ```
 
-Edit `generate_podcast.py` to customize:
-- Blog post text and URL
-- Profanity filtering (on by default)
-- Voice and model settings
+## Adding Episodes
 
-## Generate the RSS feed
+Edit `episodes.yaml`:
 
-```bash
-python main.py
+```yaml
+- title: Episode Title
+  published_date: "2024-10-09T00:41:54-04:00"
+  blog_url: https://example.com/post
+  was_edited: true
+  description: |
+    Episode description here.
+    Can be multiline.
 ```
 
-This creates `rss.xml` in the current directory.
+Then run `uv run main.py feed` to regenerate the RSS feed.
 
-## Adding episodes
+## Architecture
 
-Edit the `episodes` list in `main.py`:
-
-```python
-{
-    "title": "Episode Title",
-    "description": "Episode description",
-    "published_date": "2024-10-09T00:41:54-04:00",  # Eastern Time, ISO 8601 format
-}
-```
-
-The audio file must exist at:
-`https://birkspublic.blob.core.windows.net/aigeneratedpodcast/{title}.m4a`
-
-## Podcast format
-
-Each episode includes:
-- Link to the original blog post (when applicable)
-- Note about any editing for language
-- Information about AI models and tools used in generation
+- `main.py` - Typer CLI
+- `cleaner.py` - Claude Agent SDK text cleaning
+- `tts.py` - ElevenLabs audio generation
+- `storage.py` - Azure Blob Storage upload
+- `feed.py` - RSS feed generation
+- `episodes.yaml` - Episode data
 
 ## Feed URL
 

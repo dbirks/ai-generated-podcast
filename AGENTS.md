@@ -4,57 +4,39 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is an AI-generated podcast RSS feed generator. The repository generates an RSS/podcast feed from a Python script and hosts it via GitHub Pages. Audio files are stored in Azure Blob Storage, and the feed is deployed automatically on every push to main.
+AI-generated podcast feed generator. Converts blog posts to audio using Claude (text cleanup) and ElevenLabs (TTS), uploads to Azure Blob Storage, and generates an RSS feed for GitHub Pages.
 
 ## Architecture
 
-- **main.py**: Core feed generation script using `feedgen` library. Contains hardcoded episode list with titles, descriptions, and publication dates. Outputs `rss.xml`.
-- **index.html**: Simple static page served via GitHub Pages.
-- **GitHub Actions**: Automated deployment pipeline (`.github/workflows/static.yml`) that runs `main.py` to generate the RSS feed and deploys everything to GitHub Pages.
-- **Episode storage**: Audio files (`.m4a` format) are stored in Azure Blob Storage at `https://birkspublic.blob.core.windows.net/aigeneratedpodcast/`
+```
+main.py       - Typer CLI entry point
+cleaner.py    - Claude Agent SDK text cleaning
+tts.py        - ElevenLabs audio generation
+storage.py    - Azure Blob Storage upload
+feed.py       - RSS feed generation from episodes.yaml
+episodes.yaml - Episode data (YAML with literal blocks)
+```
 
 ## Development Commands
 
-### Setup
 ```bash
-uv sync  # Install dependencies using uv package manager
+uv sync                                          # Install dependencies
+uv run main.py --help                            # Show CLI help
+uv run main.py feed                              # Generate RSS feed
+uv run main.py list                              # List episodes
+uv run main.py episode "Title" -t post.txt       # Full pipeline
 ```
 
-### Running the Generator
-```bash
-source .venv/bin/activate
-python main.py
-```
-This generates `rss.xml` and prints the feed content to stdout.
+## Adding Episodes
 
-### Python Version
-The project requires Python 3.12+ (specified in `pyproject.toml` and `.python-version`).
-
-## Adding New Episodes
-
-1. Add a new episode dictionary to the `episodes` list in `main.py`:
-   ```python
-   {
-       "title": "Episode Title",
-       "description": "Episode description",
-       "published_date": "2024-10-09T00:41:54-04:00",  # Eastern Time format
-   }
-   ```
-2. The episode filename is derived from the title with `.m4a` extension
-3. Ensure the corresponding `.m4a` file exists in Azure Blob Storage at: `{episode_base_url}/{title}.m4a`
-4. Publish dates use Eastern Time (UTC-4/UTC-5) in ISO 8601 format
+1. Add entry to `episodes.yaml`
+2. Run `uv run main.py feed` to regenerate RSS
 
 ## Deployment
 
-The GitHub Actions workflow automatically:
-1. Checks out the code
-2. Installs `uv` and dependencies
-3. Runs `main.py` to generate `rss.xml`
-4. Deploys all files to GitHub Pages
-
-No manual deployment is needed - just push to `main`.
+GitHub Actions runs `uv run main.py feed` on push to main, then deploys to GitHub Pages.
 
 ## External URLs
 
-- GitHub Pages base: `https://dbirks.github.io/ai-generated-podcast`
-- Azure Blob Storage: `https://birkspublic.blob.core.windows.net/aigeneratedpodcast`
+- Feed: https://dbirks.github.io/ai-generated-podcast/rss.xml
+- Audio: https://birkspublic.blob.core.windows.net/aigeneratedpodcast/

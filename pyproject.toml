@@ -9,4 +9,8 @@ dependencies = [
     "pytz>=2024.2",
     "elevenlabs>=1.0.0",
     "python-dotenv>=1.0.0",
+    "claude-agent-sdk>=0.1.19",
+    "typer>=0.21.1",
+    "azure-storage-blob>=12.28.0",
+    "ruamel-yaml>=0.19.1",
 ]
