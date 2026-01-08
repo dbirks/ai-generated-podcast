@@ -51,3 +51,27 @@
     of evaluating frontier LLMs when they differ by single-digit benchmark
     margins. Covers pricing, new features, prompt injection resistance,
     and the pelican-riding-a-bicycle test.
+
+- title: Exploring the Future of MCP Transports
+  published_date: "2026-01-08T10:00:00-05:00"
+  blog_url: https://blog.modelcontextprotocol.io/posts/2025-12-19-mcp-transport-future/
+  was_edited: false
+  author: Kurtis Van Gent, Shaun Smith
+  article_date: "2025-12-19"
+  tech: Claude, ElevenLabs TTS
+  description: |
+    The MCP Transport Working Group explores the future of MCP transports,
+    covering OAuth2 integration, WebSocket upgrades, and new transport
+    mechanisms for remote server connections.
+
+- title: Adopting the MCP Bundle Format
+  published_date: "2026-01-08T10:10:00-05:00"
+  blog_url: https://blog.modelcontextprotocol.io/posts/2025-11-20-adopting-mcpb/
+  was_edited: false
+  author: David Soria Parra, Joan Xie
+  article_date: "2025-11-21"
+  tech: Claude, ElevenLabs TTS
+  description: |
+    Introduction to the MCP Bundle format (.mcpb) for portable local servers.
+    Covers the specification, tooling, and how to create distributable
+    MCP server packages.
