@@ -40,3 +40,39 @@ GitHub Actions runs `uv run main.py feed` on push to main, then deploys to GitHu
 
 - Feed: https://dbirks.github.io/ai-generated-podcast/rss.xml
 - Audio: https://birkspublic.blob.core.windows.net/aigeneratedpodcast/
+
+## Lessons Learned
+
+### ElevenLabs Character Limit
+ElevenLabs API has a 10,000 character limit per request. `tts.py` automatically chunks long texts at paragraph/sentence boundaries and concatenates with ffmpeg.
+
+### Profanity Cleaning
+The `cleaner.py` uses claude-agent-sdk but the spawned agent doesn't reliably make file edits. For now, do profanity edits manually with the Edit tool. Light-touch rules:
+- `ass` → `butt`
+- `shit` → `stuff` / `squat` / `nada`
+- `hell` → `heck`
+- `damn` → `darn`
+- `F***` → remove/reword
+- Keep: `fart`, `crap`, other mild words
+
+### Fetching Blog Content
+Medium and similar sites block curl (Cloudflare). Either use browser devtools MCP or manually copy the article text.
+
+### Audio Format
+Files are MP3 but uploaded with `.m4a` extension for podcast app compatibility.
+
+### Full Episode Workflow
+```bash
+# 1. Get article text into temp/article.txt (manual or browser MCP)
+# 2. Clean profanity (manual Edit tool for now)
+# 3. Generate audio
+uv run main.py tts temp/article_clean.txt -o "temp/Episode Title.mp3"
+# 4. Test locally
+mpv "temp/Episode Title.mp3"
+# 5. Upload and add to feed
+uv run main.py upload "temp/Episode Title.mp3" --name "Episode Title.m4a"
+# 6. Edit episodes.yaml, then regenerate feed
+uv run main.py feed
+# 7. Push to deploy
+git push origin main
+```
