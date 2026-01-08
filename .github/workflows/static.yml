@@ -41,7 +41,7 @@ jobs:
       - name: Generate rss.xml
         run: |
           source .venv/bin/activate
-          python main.py
+          python main.py feed
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
