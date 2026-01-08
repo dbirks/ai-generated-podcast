@@ -47,13 +47,7 @@ GitHub Actions runs `uv run main.py feed` on push to main, then deploys to GitHu
 ElevenLabs API has a 10,000 character limit per request. `tts.py` automatically chunks long texts at paragraph/sentence boundaries and concatenates with ffmpeg.
 
 ### Profanity Cleaning
-The `cleaner.py` uses claude-agent-sdk but the spawned agent doesn't reliably make file edits. For now, do profanity edits manually with the Edit tool. Light-touch rules:
-- `ass` → `butt`
-- `shit` → `stuff` / `squat` / `nada`
-- `hell` → `heck`
-- `damn` → `darn`
-- `F***` → remove/reword
-- Keep: `fart`, `crap`, other mild words
+The `cleaner.py` uses claude-agent-sdk but the spawned agent doesn't reliably make file edits. For now, do profanity edits manually with the Edit tool. Light-touch rules - swap strong words for mild alternatives (butt, stuff, heck, darn). Keep mild words like fart, crap.
 
 ### Fetching Blog Content
 Medium and similar sites block curl (Cloudflare). Either use browser devtools MCP or manually copy the article text.
