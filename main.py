@@ -150,12 +150,14 @@ def clean(
 def tts(
     text_file: Path = typer.Argument(..., help="Path to text file"),
     output: Path = typer.Option(..., "--output", "-o", help="Output audio file path"),
+    provider: str = typer.Option("openai", "--provider", "-p", help="TTS provider: openai or elevenlabs"),
+    voice: str | None = typer.Option(None, "--voice", "-v", help="Voice ID (provider-specific)"),
 ):
-    """Generate audio from text using ElevenLabs."""
+    """Generate audio from text using OpenAI or ElevenLabs TTS."""
     text = text_file.read_text()
-    rprint(f"Generating audio from {len(text)} characters...")
+    rprint(f"Generating audio from {len(text)} characters with {provider}...")
 
-    generate_audio(text, output)
+    generate_audio(text, output, provider=provider, voice=voice)
     rprint(f"[green]Saved to: {output}[/green]")
 
 
