@@ -137,3 +137,15 @@
     valley-free routing, route leak types, and why this anomaly was likely
     poor ISP policy rather than malicious activity. Discusses RPKI, ASPA,
     and RFC9234 for preventing future leaks.
+
+- title: LLM Predictions for 2026
+  published_date: "2026-01-08T12:30:00-05:00"
+  blog_url: https://simonwillison.net/2026/Jan/8/llm-predictions-for-2026/
+  was_edited: false
+  author: Simon Willison
+  article_date: "2026-01-08"
+  tech: Claude, OpenAI TTS (cedar)
+  description: |
+    Simon Willison shares his LLM predictions for 2026, presented on
+    Oxide and Friends podcast. Covers model capabilities, agent systems,
+    trust/verification challenges, and the evolving AI landscape.
