@@ -24,7 +24,7 @@ Generates podcast audio from blog posts using Claude Code for orchestration and 
 7. Commits and pushes to GitHub
 
 **GitHub Actions (Automated):**
-1. Runs `uv run main.py feed` to generate `rss.xml` from `episodes.yaml`
+1. Runs `uv run main.py feed` to generate `rss.xml` from `episodes.yaml` (using [feedgen](https://github.com/lkiesow/python-feedgen))
 2. Deploys `rss.xml`, `logo.png`, and `index.html` to GitHub Pages
 3. Takes ~30 seconds
 
