@@ -93,6 +93,17 @@ GitHub Actions on push to main:
 2. Uploads only rss.xml, logo.png, index.html to Pages (not temp/)
 3. ~30s deploy time
 
+## Batch Processing
+
+When processing multiple articles, use parallel Task agents:
+- Scrape all articles in parallel
+- Check profanity in parallel
+- Run TTS in parallel background agents
+- Upload to Azure in parallel
+- Add all to episodes.yaml at once
+
+This lets the user queue work while processing continues.
+
 ## External URLs
 
 - RSS: https://dbirks.github.io/ai-generated-podcast/rss.xml

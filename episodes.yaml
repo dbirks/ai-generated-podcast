@@ -149,3 +149,52 @@
     Simon Willison shares his LLM predictions for 2026, presented on
     Oxide and Friends podcast. Covers model capabilities, agent systems,
     trust/verification challenges, and the evolving AI landscape.
+
+- title: Zero Framework Cognition
+  published_date: "2026-01-12T10:00:00-05:00"
+  blog_url: https://steve-yegge.medium.com/zero-framework-cognition-a-way-to-build-resilient-ai-applications-56b090ed3e69
+  was_edited: false
+  author: Steve Yegge
+  article_date: "2025-11-02"
+  tech: Claude, OpenAI TTS (cedar)
+  description: |
+    Steve Yegge introduces Zero Framework Cognition (ZFC) - an architectural
+    pattern for AI apps where all reasoning stays with the model while the
+    client handles only orchestration. Covers smart endpoints, dumb pipes,
+    and why AIs keep trying to add hacky keyword matching.
+
+- title: 21 Lessons From 14 Years at Google
+  published_date: "2026-01-12T10:10:00-05:00"
+  blog_url: https://addyosmani.com/blog/21-lessons/
+  was_edited: false
+  author: Addy Osmani
+  article_date: null
+  tech: Claude, OpenAI TTS (cedar)
+  description: |
+    Addy Osmani shares 21 lessons from his 14-year career at Google.
+    Covers engineering culture, career growth, team dynamics, and
+    insights from working on Chrome and web platform teams.
+
+- title: Don't Fall Into the Anti-AI Hype
+  published_date: "2026-01-12T10:20:00-05:00"
+  blog_url: https://antirez.com/news/158
+  was_edited: false
+  author: antirez
+  article_date: "2026-01-11"
+  tech: Claude, OpenAI TTS (cedar)
+  description: |
+    Salvatore Sanfilippo (antirez) on why AI is changing programming forever.
+    Covers his personal journey from line-by-line coding to prompt-driven
+    development, practical examples, and why avoiding AI is no longer sensible.
+
+- title: A Software Library With No Code
+  published_date: "2026-01-12T10:30:00-05:00"
+  blog_url: https://www.dbreunig.com/2026/01/08/a-software-library-with-no-code.html
+  was_edited: false
+  author: Drew Breunig
+  article_date: "2026-01-08"
+  tech: Claude, OpenAI TTS (cedar)
+  description: |
+    Drew Breunig explores software libraries that contain no code - just
+    prompts and schemas for AI models. A look at how software distribution
+    is evolving in the LLM era.
