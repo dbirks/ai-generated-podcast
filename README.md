@@ -14,13 +14,23 @@ Generates podcast audio from blog posts using Claude Code for orchestration and 
 
 ## How It Works
 
+**Local Workflow (Claude Code):**
 1. Paste a blog URL into Claude Code and ask for a new episode
-2. Claude Code scrapes the article, cleans up language if needed, generates TTS audio
-3. Audio uploads to Azure Blob Storage, episode metadata goes into `episodes.yaml`
-4. `feedgen` generates `rss.xml` from `episodes.yaml`
-5. GitHub Actions deploys to GitHub Pages on push
+2. Claude Code scrapes the article (using `scraper.py` or inline scripts for tricky sites)
+3. Checks for profanity and cleans up language if needed
+4. Generates TTS audio with OpenAI (cedar voice)
+5. Uploads audio to Azure Blob Storage
+6. Adds episode metadata to `episodes.yaml`
+7. Commits and pushes to GitHub
 
-The whole flow runs locally via Claude Code - just paste a link and ask for an episode.
+**GitHub Actions (Automated):**
+1. Runs `uv run main.py feed` to generate `rss.xml` from `episodes.yaml`
+2. Deploys `rss.xml`, `logo.png`, and `index.html` to GitHub Pages
+3. Takes ~30 seconds
+
+**Scraping Note:** The scraper handles most sites automatically, but some (Medium, Cloudflare-protected sites) need custom handling - Claude adapts per-site as needed.
+
+The entire workflow is just: "Hey Claude, can you add this too? https://..."
 
 ## Setup
 
