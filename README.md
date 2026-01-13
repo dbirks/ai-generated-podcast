@@ -14,6 +14,19 @@ Generates podcast audio from blog posts using Claude Code for orchestration and 
 
 ## How It Works
 
+**Automated Workflow (GitHub Actions):**
+1. Create a GitHub issue with the `podcast-episode` label or title starting with `[Episode]`
+2. Include the blog URL in the issue body (format: `URL: https://...`)
+3. GitHub Actions automatically:
+   - Scrapes the article
+   - Checks for profanity (stops if found, requiring manual edit)
+   - Generates TTS audio with OpenAI (cedar voice)
+   - Uploads audio to Azure Blob Storage
+   - Adds episode metadata to `episodes.yaml`
+   - Regenerates RSS feed
+   - Commits and pushes changes
+   - Comments on the issue with status updates
+
 **Local Workflow (Claude Code):**
 1. Paste a blog URL into Claude Code and ask for a new episode
 2. Claude Code scrapes the article (using `scraper.py` or inline scripts for tricky sites)
@@ -23,22 +36,51 @@ Generates podcast audio from blog posts using Claude Code for orchestration and 
 6. Adds episode metadata to `episodes.yaml`
 7. Commits and pushes to GitHub
 
-**GitHub Actions (Automated):**
-1. Runs `uv run main.py feed` to generate `rss.xml` from `episodes.yaml` (using [feedgen](https://github.com/lkiesow/python-feedgen))
-2. Deploys `rss.xml`, `logo.png`, and `index.html` to GitHub Pages
-3. Takes ~30 seconds
+**RSS Feed Deployment:**
+- On push to `main`, GitHub Actions runs `uv run main.py feed` to generate `rss.xml`
+- Deploys `rss.xml`, `logo.png`, and `index.html` to GitHub Pages
+- Takes ~30 seconds
 
-**Scraping Note:** The scraper handles most sites automatically, but some (Medium, Cloudflare-protected sites) need custom handling - Claude adapts per-site as needed.
-
-The entire workflow is just: "Hey Claude, can you add this too? https://..."
+**Scraping Note:** The scraper handles most sites automatically, but some (Medium, Cloudflare-protected sites) need custom handling - use Wayback Machine or manual text extraction.
 
 ## Setup
+
+### Local Development
 
 ```bash
 uv sync
 cp .env.example .env
 # Edit .env with your API keys
 ```
+
+### GitHub Actions (Automated Episode Generation)
+
+To enable automated episode generation from GitHub issues, add these secrets to your repository:
+
+**Settings → Secrets and variables → Actions → New repository secret**
+
+| Secret Name | Required | Description |
+|------------|----------|-------------|
+| `OPENAI_API_KEY` | Yes | OpenAI API key for TTS generation |
+| `AZURE_STORAGE_CONNECTION_STRING` | Yes | Azure Blob Storage connection string |
+
+**Creating an issue for automated episode generation:**
+
+```markdown
+Title: [Episode] My Episode Title
+
+URL: https://example.com/blog-post
+Author: John Doe
+Description: A brief description of the episode content.
+```
+
+Or simply add the `podcast-episode` label to any issue with a URL in the body.
+
+The workflow will:
+- Comment on the issue with progress updates
+- Stop and notify you if profanity is detected (requires manual editing)
+- Close the issue automatically on success
+- Comment with error details on failure
 
 ## Environment Variables
 

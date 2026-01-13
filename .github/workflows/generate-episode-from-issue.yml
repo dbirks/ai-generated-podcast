@@ -1,0 +1,265 @@
+name: Generate Podcast Episode from Issue
+
+on:
+  issues:
+    types: [opened, labeled]
+
+# Only run if issue has 'podcast-episode' label or title contains '[Episode]'
+# Allows manual trigger via workflow_dispatch as well
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'Issue number to process'
+        required: true
+        type: number
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  generate-episode:
+    # Only run if issue has 'podcast-episode' label or title starts with [Episode]
+    if: |
+      (github.event_name == 'issues' && (contains(github.event.issue.labels.*.name, 'podcast-episode') || startsWith(github.event.issue.title, '[Episode]'))) ||
+      github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Extract issue information
+        id: extract
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue || await github.rest.issues.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ github.event.inputs.issue_number || github.event.issue.number }}
+            }).then(res => res.data);
+
+            const body = issue.body || '';
+            const title = issue.title;
+
+            // Extract URL (look for markdown links or plain URLs)
+            const urlMatch = body.match(/(?:URL|Blog|Link):\s*<?([https?:\/\/][^\s>]+)>?/i) ||
+                            body.match(/\[.*?\]\((https?:\/\/[^\)]+)\)/) ||
+                            body.match(/(https?:\/\/[^\s]+)/);
+
+            if (!urlMatch) {
+              core.setFailed('No URL found in issue body. Please include a blog post URL.');
+              return;
+            }
+
+            const url = urlMatch[1];
+
+            // Extract episode title (from issue title or body)
+            let episodeTitle = title.replace(/^\[Episode\]\s*/i, '').trim();
+            const titleMatch = body.match(/(?:Title|Episode):\s*(.+?)(?:\n|$)/i);
+            if (titleMatch) {
+              episodeTitle = titleMatch[1].trim();
+            }
+
+            // Extract author (optional)
+            const authorMatch = body.match(/(?:Author|By):\s*(.+?)(?:\n|$)/i);
+            const author = authorMatch ? authorMatch[1].trim() : 'Unknown';
+
+            // Extract description (optional, first paragraph after metadata)
+            const descMatch = body.match(/(?:Description|Summary):\s*(.+?)(?:\n\n|$)/is);
+            const description = descMatch ? descMatch[1].trim() : `Podcast episode generated from ${url}`;
+
+            core.setOutput('url', url);
+            core.setOutput('title', episodeTitle);
+            core.setOutput('author', author);
+            core.setOutput('description', description);
+            core.setOutput('issue_number', issue.number);
+
+            console.log(`Extracted: Title="${episodeTitle}", URL=${url}, Author=${author}`);
+
+      - name: Comment on issue - Starting
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ steps.extract.outputs.issue_number }},
+              body: `🎙️ **Starting episode generation...**\n\n` +
+                    `- Title: "${{ steps.extract.outputs.title }}"\n` +
+                    `- URL: ${{ steps.extract.outputs.url }}\n` +
+                    `- Author: ${{ steps.extract.outputs.author }}\n\n` +
+                    `This will take a few minutes. I'll update this issue when complete.`
+            });
+
+      - name: Scrape article
+        id: scrape
+        run: |
+          set -e
+          uv run python main.py scrape "${{ steps.extract.outputs.url }}"
+
+          # Check if article.txt was created
+          if [ ! -f "temp/article.txt" ]; then
+            echo "error=Failed to scrape article" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+          # Get article date from file metadata
+          ARTICLE_DATE=$(date -r temp/article.txt +%Y-%m-%d)
+          echo "article_date=$ARTICLE_DATE" >> $GITHUB_OUTPUT
+          echo "✓ Article scraped successfully"
+
+      - name: Check for profanity
+        id: profanity
+        run: |
+          # Check for strong profanity only (f-word, s-word, d-word, etc.)
+          if grep -i -E "fuck|shit|damn|bitch|bastard" temp/article.txt > /dev/null; then
+            echo "found=true" >> $GITHUB_OUTPUT
+            echo "⚠️  Profanity detected - manual review required"
+
+            # Save matches for comment
+            grep -i -n -E "fuck|shit|damn|bitch|bastard" temp/article.txt | head -5 > profanity_matches.txt || true
+          else
+            echo "found=false" >> $GITHUB_OUTPUT
+            echo "✓ No profanity detected"
+          fi
+
+      - name: Comment on issue - Profanity found
+        if: steps.profanity.outputs.found == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let matches = '';
+            try {
+              matches = fs.readFileSync('profanity_matches.txt', 'utf8');
+            } catch (e) {
+              matches = '(error reading matches)';
+            }
+
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ steps.extract.outputs.issue_number }},
+              body: `⚠️ **Profanity detected in article**\n\n` +
+                    `The following profanity was found (showing first 5 matches):\n\n` +
+                    `\`\`\`\n${matches}\n\`\`\`\n\n` +
+                    `**Action required:** Please manually edit \`temp/article.txt\` to replace:\n` +
+                    `- fuck/fucking → freaking\n` +
+                    `- shit → stuff\n` +
+                    `- damn → darn\n` +
+                    `- bitch/bastard → jerk\n\n` +
+                    `Then re-run this workflow manually.`
+            });
+
+      - name: Fail if profanity found
+        if: steps.profanity.outputs.found == 'true'
+        run: |
+          echo "❌ Profanity detected - workflow stopped"
+          echo "Please manually edit temp/article.txt and re-run the workflow"
+          exit 1
+
+      - name: Generate TTS audio
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          set -e
+          uv run python main.py tts temp/article.txt \
+            -o "temp/${{ steps.extract.outputs.title }}.mp3"
+
+          echo "✓ TTS audio generated"
+
+      - name: Upload to Azure Blob Storage
+        env:
+          AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+        run: |
+          set -e
+          uv run python main.py upload \
+            "temp/${{ steps.extract.outputs.title }}.mp3" \
+            --name "${{ steps.extract.outputs.title }}.m4a"
+
+          echo "✓ Audio uploaded to Azure"
+
+      - name: Update episodes.yaml
+        run: |
+          set -e
+
+          # Make script executable
+          chmod +x scripts/add_episode.py
+
+          # Add episode to YAML
+          uv run python scripts/add_episode.py \
+            "${{ steps.extract.outputs.title }}" \
+            "${{ steps.extract.outputs.url }}" \
+            "${{ steps.extract.outputs.author }}" \
+            "${{ steps.scrape.outputs.article_date }}" \
+            "${{ steps.extract.outputs.description }}" \
+            "false" \
+            "Claude, OpenAI TTS (cedar)"
+
+          echo "✓ episodes.yaml updated"
+
+      - name: Regenerate RSS feed
+        run: |
+          set -e
+          uv run python main.py feed
+          echo "✓ RSS feed regenerated"
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add episodes.yaml rss.xml
+          git commit -m "Add episode: ${{ steps.extract.outputs.title }} (closes #${{ steps.extract.outputs.issue_number }})"
+          git push
+
+      - name: Comment on issue - Success
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ steps.extract.outputs.issue_number }},
+              body: `✅ **Episode generated successfully!**\n\n` +
+                    `- Title: "${{ steps.extract.outputs.title }}"\n` +
+                    `- RSS Feed: https://dbirks.github.io/ai-generated-podcast/rss.xml\n` +
+                    `- Audio: https://birkspublic.blob.core.windows.net/aigeneratedpodcast/${{ steps.extract.outputs.title }}.m4a\n\n` +
+                    `The episode will be available in your podcast feed within ~30 seconds.`
+            });
+
+            // Close the issue
+            github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ steps.extract.outputs.issue_number }},
+              state: 'closed'
+            });
+
+      - name: Comment on issue - Failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ steps.extract.outputs.issue_number }},
+              body: `❌ **Episode generation failed**\n\n` +
+                    `Please check the [workflow run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.\n\n` +
+                    `Common issues:\n` +
+                    `- Profanity detected (requires manual editing)\n` +
+                    `- Failed to scrape article (try Wayback Machine for Medium articles)\n` +
+                    `- Missing API keys (check repository secrets)`
+            });
