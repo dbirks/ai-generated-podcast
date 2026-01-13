@@ -210,3 +210,148 @@ def generate_audio(
 
     print(f"  Saved to: {output_path}")
     return output_path
+
+
+def _generate_silence(duration_seconds: float, output_path: Path) -> Path:
+    """Generate silence using ffmpeg."""
+    print(f"  Generating {duration_seconds}s silence...")
+    subprocess.run([
+        "ffmpeg", "-y", "-f", "lavfi", "-i",
+        f"anullsrc=r=44100:cl=stereo:d={duration_seconds}",
+        "-c:a", "libmp3lame", "-b:a", "128k", str(output_path)
+    ], check=True, capture_output=True)
+    return output_path
+
+
+def generate_audio_with_intro(
+    intro_text: str,
+    main_text: str,
+    output_path: Path,
+    provider: str = "openai",
+    intro_voice: str = "marin",
+    main_voice: str = "cedar",
+    model: str | None = None,
+    pause_duration: float = 2.0,
+) -> Path:
+    """
+    Generate audio with intro (different voice) + pause + main content.
+
+    Args:
+        intro_text: Text for intro (spoken in intro_voice)
+        main_text: Main content text (spoken in main_voice)
+        output_path: Path to save final audio file
+        provider: "openai" or "elevenlabs"
+        intro_voice: Voice for intro (default: "marin")
+        main_voice: Voice for main content (default: "cedar")
+        model: Model ID (provider-specific)
+        pause_duration: Seconds of silence between intro and main (default: 2.0)
+
+    Returns the output path.
+    """
+    output_path = Path(output_path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    print(f"Generating audio with intro...")
+    print(f"  Intro voice: {intro_voice}")
+    print(f"  Main voice: {main_voice}")
+    print(f"  Pause: {pause_duration}s")
+    print(f"  Intro length: {len(intro_text)} characters")
+    print(f"  Main length: {len(main_text)} characters")
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tmpdir_path = Path(tmpdir)
+
+        # 1. Generate intro with intro_voice
+        intro_path = tmpdir_path / "intro.mp3"
+        if provider == "openai":
+            from openai import OpenAI
+            api_key = os.getenv("OPENAI_API_KEY")
+            if not api_key:
+                raise ValueError("OPENAI_API_KEY not set in environment")
+            client = OpenAI(api_key=api_key)
+            model = model or os.getenv("OPENAI_MODEL", OPENAI_DEFAULT_MODEL)
+
+            print(f"  Generating intro ({len(intro_text)} chars)...")
+            with client.audio.speech.with_streaming_response.create(
+                model=model,
+                voice=intro_voice,
+                input=intro_text,
+                response_format="mp3",
+            ) as response:
+                response.stream_to_file(intro_path)
+        else:
+            from elevenlabs.client import ElevenLabs
+            api_key = os.getenv("ELEVENLABS_API_KEY")
+            if not api_key:
+                raise ValueError("ELEVENLABS_API_KEY not set in environment")
+            client = ElevenLabs(api_key=api_key)
+            model = model or os.getenv("MODEL_ID", ELEVENLABS_DEFAULT_MODEL)
+
+            print(f"  Generating intro ({len(intro_text)} chars)...")
+            audio = client.text_to_speech.convert(
+                text=intro_text,
+                voice_id=intro_voice,
+                model_id=model,
+                output_format="mp3_44100_128",
+            )
+            with open(intro_path, "wb") as f:
+                for chunk in audio:
+                    f.write(chunk)
+
+        # 2. Generate silence
+        silence_path = tmpdir_path / "silence.mp3"
+        _generate_silence(pause_duration, silence_path)
+
+        # 3. Generate main content with main_voice (with chunking if needed)
+        main_path = tmpdir_path / "main.mp3"
+        if provider == "openai":
+            from openai import OpenAI
+            api_key = os.getenv("OPENAI_API_KEY")
+            if not api_key:
+                raise ValueError("OPENAI_API_KEY not set in environment")
+            client = OpenAI(api_key=api_key)
+            model = model or os.getenv("OPENAI_MODEL", OPENAI_DEFAULT_MODEL)
+
+            if len(main_text) <= OPENAI_MAX_CHARS:
+                print(f"  Generating main content ({len(main_text)} chars)...")
+                with client.audio.speech.with_streaming_response.create(
+                    model=model,
+                    voice=main_voice,
+                    input=main_text,
+                    response_format="mp3",
+                ) as response:
+                    response.stream_to_file(main_path)
+            else:
+                chunks = chunk_text(main_text, OPENAI_MAX_CHARS)
+                print(f"  Generating main content in {len(chunks)} chunks...")
+                _generate_chunked_openai(client, chunks, main_path, main_voice, model)
+        else:
+            from elevenlabs.client import ElevenLabs
+            api_key = os.getenv("ELEVENLABS_API_KEY")
+            if not api_key:
+                raise ValueError("ELEVENLABS_API_KEY not set in environment")
+            client = ElevenLabs(api_key=api_key)
+            model = model or os.getenv("MODEL_ID", ELEVENLABS_DEFAULT_MODEL)
+
+            if len(main_text) <= ELEVENLABS_MAX_CHARS:
+                print(f"  Generating main content ({len(main_text)} chars)...")
+                audio = client.text_to_speech.convert(
+                    text=main_text,
+                    voice_id=main_voice,
+                    model_id=model,
+                    output_format="mp3_44100_128",
+                )
+                with open(main_path, "wb") as f:
+                    for chunk in audio:
+                        f.write(chunk)
+            else:
+                chunks = chunk_text(main_text, ELEVENLABS_MAX_CHARS)
+                print(f"  Generating main content in {len(chunks)} chunks...")
+                _generate_chunked(client, chunks, main_path, main_voice, model, "elevenlabs")
+
+        # 4. Concatenate all three parts
+        audio_files = [intro_path, silence_path, main_path]
+        _concatenate_audio(audio_files, output_path, tmpdir)
+
+    print(f"  Saved to: {output_path}")
+    return output_path

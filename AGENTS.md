@@ -19,6 +19,10 @@ grep -i -E "fuck|shit|damn|bitch|bastard" temp/article.txt
 # 4. Generate TTS (auto-chunks, uses cedar voice by default)
 uv run main.py tts temp/article.txt -o "temp/Episode Title.mp3"
 
+# 4a. Optional: Use intro feature (Marin voice for intro, Cedar for main)
+uv run main.py tts temp/article.txt -o "temp/Episode Title.mp3" \
+  --intro "Welcome to the AI Generated Podcast. This episode covers..."
+
 # 5. Upload to Azure
 uv run main.py upload "temp/Episode Title.mp3" --name "Episode Title.m4a"
 
@@ -49,6 +53,14 @@ Or ask user to paste text manually.
 - Use `-p elevenlabs` flag
 - Chunks at 10k chars
 - Quota-based, can run out
+
+**Intro Feature (Multi-Voice):**
+- Use `--intro "intro text"` to add a separate intro with different voice
+- Intro voice: `marin` (default, configurable with `--intro-voice`)
+- Main voice: `cedar` (default, configurable with `--main-voice`)
+- Auto-adds 2s pause between intro and main (configurable with `--pause`)
+- Example: `uv run main.py tts article.txt -o output.mp3 --intro "Welcome to the show"`
+- Works with both OpenAI and ElevenLabs providers
 
 ## Profanity Rules
 

@@ -19,7 +19,7 @@ from rich import print as rprint
 from cleaner import clean_file_sync, CleanResult
 from feed import Episode, add_episode, load_episodes, write_feed, BLOB_BASE_URL
 from storage import upload_blob
-from tts import generate_audio
+from tts import generate_audio, generate_audio_with_intro
 
 app = typer.Typer(help="AI-Generated Podcast CLI")
 
@@ -152,12 +152,31 @@ def tts(
     output: Path = typer.Option(..., "--output", "-o", help="Output audio file path"),
     provider: str = typer.Option("openai", "--provider", "-p", help="TTS provider: openai or elevenlabs"),
     voice: str | None = typer.Option(None, "--voice", "-v", help="Voice ID (provider-specific)"),
+    intro: str | None = typer.Option(None, "--intro", help="Intro text (uses Marin voice + pause before main content)"),
+    pause: float = typer.Option(2.0, "--pause", help="Seconds of silence after intro (default: 2.0)"),
+    intro_voice: str = typer.Option("marin", "--intro-voice", help="Voice for intro (default: marin)"),
+    main_voice: str = typer.Option("cedar", "--main-voice", help="Voice for main content when using --intro (default: cedar)"),
 ):
     """Generate audio from text using OpenAI or ElevenLabs TTS."""
     text = text_file.read_text()
     rprint(f"Generating audio from {len(text)} characters with {provider}...")
 
-    generate_audio(text, output, provider=provider, voice=voice)
+    if intro:
+        # Use multi-voice workflow with intro
+        rprint(f"[bold]Using intro mode:[/bold] {intro_voice} (intro) + {pause}s pause + {main_voice} (main)")
+        generate_audio_with_intro(
+            intro_text=intro,
+            main_text=text,
+            output_path=output,
+            provider=provider,
+            intro_voice=intro_voice,
+            main_voice=main_voice,
+            pause_duration=pause,
+        )
+    else:
+        # Standard single-voice workflow
+        generate_audio(text, output, provider=provider, voice=voice)
+
     rprint(f"[green]Saved to: {output}[/green]")
 
 
