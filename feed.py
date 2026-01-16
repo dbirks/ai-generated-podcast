@@ -124,7 +124,15 @@ def generate_feed(episodes: list[Episode] | None = None) -> str:
     fg.podcast.itunes_image(logo_url)
 
     for episode in episodes:
-        url = f"{BLOB_BASE_URL}/{episode.title}.m4a"
+        # Strip prefix from title for blob filename
+        # Prefixes: [Blog], [NotebookLM], [Document], [Tidbit], [Short]
+        blob_filename = episode.title
+        for prefix in ["[Blog] ", "[NotebookLM] ", "[Document] ", "[Tidbit] ", "[Short] "]:
+            if blob_filename.startswith(prefix):
+                blob_filename = blob_filename[len(prefix):]
+                break
+
+        url = f"{BLOB_BASE_URL}/{blob_filename}.m4a"
 
         fe = fg.add_entry()
         fe.id(url)
