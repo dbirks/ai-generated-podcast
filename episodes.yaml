@@ -223,3 +223,16 @@
     detailing Unidentified Anomalous Phenomena (UAP) programs. Covers
     systematic observation, analysis, and documentation of UAPs by the
     U.S. government.
+
+- title: "[Blog] Gas Town Emergency User Manual"
+  published_date: "2026-01-13T10:20:00-05:00"
+  blog_url: https://steve-yegge.medium.com/gas-town-emergency-user-manual-cf0e4556d74b
+  was_edited: true
+  author: Steve Yegge
+  article_date: null
+  tech: Claude, OpenAI TTS (cedar)
+  description: |
+    Steve Yegge provides an emergency guide for early Gas Town adopters.
+    Covers development workflows, tmux usage, crew management, PR sheriffs,
+    and tips for using Gas Town's multi-agent system effectively.
+    Lightly edited for language.
