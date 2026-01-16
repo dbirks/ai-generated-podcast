@@ -3,6 +3,7 @@
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
+from urllib.parse import quote
 
 from feedgen.feed import FeedGenerator
 from ruamel.yaml import YAML
@@ -132,12 +133,15 @@ def generate_feed(episodes: list[Episode] | None = None) -> str:
                 blob_filename = blob_filename[len(prefix):]
                 break
 
-        url = f"{BLOB_BASE_URL}/{blob_filename}.m4a"
+        # URL-encode the filename (spaces become %20, etc.)
+        encoded_filename = quote(f"{blob_filename}.m4a")
+        url = f"{BLOB_BASE_URL}/{encoded_filename}"
 
         fe = fg.add_entry()
         fe.id(url)
         fe.title(episode.title)
         fe.description(format_description(episode))
+        # Note: length=0 is acceptable for RSS, podcast apps will handle it
         fe.enclosure(url, 0, "audio/mp4")
         fe.published(episode.published_date)
 
