@@ -198,3 +198,15 @@
     Drew Breunig explores software libraries that contain no code - just
     prompts and schemas for AI models. A look at how software distribution
     is evolving in the LLM era.
+
+- title: "[Blog] Data is Your Only Moat"
+  published_date: "2026-01-13T10:00:00-05:00"
+  blog_url: https://frontierai.substack.com/p/data-is-your-only-moat
+  was_edited: false
+  author: Vikram Sreekanti
+  article_date: null
+  tech: Claude, OpenAI TTS (cedar)
+  description: |
+    Vikram Sreekanti argues that in the age of AI, proprietary data is
+    the only sustainable competitive advantage. Explores data moats in
+    modern ML systems and how to build defensible AI businesses.
