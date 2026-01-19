@@ -1,3 +1,27 @@
+- title: "[Blog] Common Pitfalls When Building Generative AI Applications"
+  published_date: "2026-01-19T07:10:00+00:00"
+  blog_url: https://huyenchip.com/2025/01/16/ai-engineering-pitfalls.html
+  was_edited: false
+  author: Chip Huyen
+  article_date: "2025-01-16"
+  tech: Claude, OpenAI TTS (cedar)
+  description: |
+    Chip Huyen shares lessons from building AI applications at scale.
+    Covers common mistakes in prompt engineering, evaluation, RAG systems,
+    and production deployment - with practical solutions for each pitfall.
+
+- title: "[Blog] Agents"
+  published_date: "2026-01-19T07:11:00+00:00"
+  blog_url: https://huyenchip.com/2025/01/07/agents.html
+  was_edited: false
+  author: Chip Huyen
+  article_date: "2025-01-07"
+  tech: Claude, OpenAI TTS (cedar)
+  description: |
+    A comprehensive deep dive into AI agents by Chip Huyen. Explores agent
+    architectures, workflows, memory systems, tool use, and the engineering
+    challenges of building reliable autonomous systems at scale.
+
 - title: "[Blog] ClickHouse Acquires Langfuse"
   published_date: "2026-01-19T05:54:00+00:00"
   blog_url: https://langfuse.com/blog/2025-01-clickhouse-acquires-langfuse
