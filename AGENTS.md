@@ -27,8 +27,10 @@ uv run main.py tts temp/article.txt -o "temp/Episode Title.mp3" \
 uv run main.py upload "temp/Episode Title.mp3" --name "Episode Title.m4a"
 
 # 6. Add to episodes.yaml (scrape command prints metadata)
+#    IMPORTANT: Append new episodes to the BOTTOM of the file (chronological order)
 # 7. Regenerate feed and push
-uv run main.py feed && git add -A && git commit -m "Add Episode Title" && git push
+#    Note: rss.xml is gitignored - only commit episodes.yaml, feed regenerates on deploy
+uv run main.py feed && git add episodes.yaml && git commit -m "Add Episode Title" && git push
 ```
 
 ## Medium Articles (Cloudflare blocked)
