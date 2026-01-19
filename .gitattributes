@@ -1,3 +1,6 @@
 *.xml text eol=lf
 *.xml linguist-language=XML
 *.xml mime-type=application/xml
+
+# Use bd merge for beads JSONL files
+.beads/issues.jsonl merge=beads

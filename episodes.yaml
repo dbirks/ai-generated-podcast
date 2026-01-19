@@ -1,3 +1,39 @@
+- title: "[Blog] ClickHouse Acquires Langfuse"
+  published_date: "2026-01-19T05:54:00+00:00"
+  blog_url: https://langfuse.com/blog/2025-01-clickhouse-acquires-langfuse
+  was_edited: false
+  author: Langfuse Team
+  article_date: "2025-01"
+  tech: Claude, OpenAI TTS (cedar)
+  description: |
+    Langfuse joins ClickHouse while staying open source and self-hostable.
+    The acquisition brings more engineering leverage for performance and
+    reliability, with no immediate changes to the product or user experience.
+
+- title: "[Blog] You Had One Job - Why Twenty Years of DevOps Has Failed"
+  published_date: "2026-01-19T05:55:00+00:00"
+  blog_url: https://www.honeycomb.io/blog/devops-feedback-loops
+  was_edited: true
+  author: Charity Majors
+  article_date: "2025"
+  tech: Claude, OpenAI TTS (cedar)
+  description: |
+    The DevOps movement's twenty-year battle to connect developers with
+    production failed—not due to lack of effort, but because the tools
+    weren't good enough. Now AI has changed the game. Lightly edited for language.
+
+- title: "[Blog] Don't Waste Your Back Pressure"
+  published_date: "2026-01-19T05:56:00+00:00"
+  blog_url: https://banay.me/dont-waste-your-backpressure/
+  was_edited: false
+  author: Banay
+  article_date: "2025"
+  tech: Claude, OpenAI TTS (cedar)
+  description: |
+    Back pressure principles for AI agents. Successful agent applications
+    share a pattern of handling back pressure effectively to maintain
+    quality and avoid wasted work.
+
 - title: "[NotebookLM] TLS 1.3 Perfect Forward Secrecy"
   published_date: "2024-10-08T23:27:57-04:00"
   blog_url: null
