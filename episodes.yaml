@@ -1,63 +1,3 @@
-- title: "[Blog] Common Pitfalls When Building Generative AI Applications"
-  published_date: "2026-01-19T07:10:00+00:00"
-  blog_url: https://huyenchip.com/2025/01/16/ai-engineering-pitfalls.html
-  was_edited: false
-  author: Chip Huyen
-  article_date: "2025-01-16"
-  tech: Claude, OpenAI TTS (cedar)
-  description: |
-    Chip Huyen shares lessons from building AI applications at scale.
-    Covers common mistakes in prompt engineering, evaluation, RAG systems,
-    and production deployment - with practical solutions for each pitfall.
-
-- title: "[Blog] Agents"
-  published_date: "2026-01-19T07:11:00+00:00"
-  blog_url: https://huyenchip.com/2025/01/07/agents.html
-  was_edited: false
-  author: Chip Huyen
-  article_date: "2025-01-07"
-  tech: Claude, OpenAI TTS (cedar)
-  description: |
-    A comprehensive deep dive into AI agents by Chip Huyen. Explores agent
-    architectures, workflows, memory systems, tool use, and the engineering
-    challenges of building reliable autonomous systems at scale.
-
-- title: "[Blog] ClickHouse Acquires Langfuse"
-  published_date: "2026-01-19T05:54:00+00:00"
-  blog_url: https://langfuse.com/blog/2025-01-clickhouse-acquires-langfuse
-  was_edited: false
-  author: Langfuse Team
-  article_date: "2025-01"
-  tech: Claude, OpenAI TTS (cedar)
-  description: |
-    Langfuse joins ClickHouse while staying open source and self-hostable.
-    The acquisition brings more engineering leverage for performance and
-    reliability, with no immediate changes to the product or user experience.
-
-- title: "[Blog] You Had One Job - Why Twenty Years of DevOps Has Failed"
-  published_date: "2026-01-19T05:55:00+00:00"
-  blog_url: https://www.honeycomb.io/blog/devops-feedback-loops
-  was_edited: true
-  author: Charity Majors
-  article_date: "2025"
-  tech: Claude, OpenAI TTS (cedar)
-  description: |
-    The DevOps movement's twenty-year battle to connect developers with
-    production failed—not due to lack of effort, but because the tools
-    weren't good enough. Now AI has changed the game. Lightly edited for language.
-
-- title: "[Blog] Don't Waste Your Back Pressure"
-  published_date: "2026-01-19T05:56:00+00:00"
-  blog_url: https://banay.me/dont-waste-your-backpressure/
-  was_edited: false
-  author: Banay
-  article_date: "2025"
-  tech: Claude, OpenAI TTS (cedar)
-  description: |
-    Back pressure principles for AI agents. Successful agent applications
-    share a pattern of handling back pressure effectively to maintain
-    quality and avoid wasted work.
-
 - title: "[NotebookLM] TLS 1.3 Perfect Forward Secrecy"
   published_date: "2024-10-08T23:27:57-04:00"
   blog_url: null
@@ -296,3 +236,76 @@
     Covers development workflows, tmux usage, crew management, PR sheriffs,
     and tips for using Gas Town's multi-agent system effectively.
     Lightly edited for language.
+
+- title: "[Blog] ClickHouse Acquires Langfuse"
+  published_date: "2026-01-19T05:54:00+00:00"
+  blog_url: https://langfuse.com/blog/2025-01-clickhouse-acquires-langfuse
+  was_edited: false
+  author: Langfuse Team
+  article_date: "2025-01"
+  tech: Claude, OpenAI TTS (cedar)
+  description: |
+    Langfuse joins ClickHouse while staying open source and self-hostable.
+    The acquisition brings more engineering leverage for performance and
+    reliability, with no immediate changes to the product or user experience.
+
+- title: "[Blog] You Had One Job - Why Twenty Years of DevOps Has Failed"
+  published_date: "2026-01-19T05:55:00+00:00"
+  blog_url: https://www.honeycomb.io/blog/devops-feedback-loops
+  was_edited: true
+  author: Charity Majors
+  article_date: "2025"
+  tech: Claude, OpenAI TTS (cedar)
+  description: |
+    The DevOps movement's twenty-year battle to connect developers with
+    production failed—not due to lack of effort, but because the tools
+    weren't good enough. Now AI has changed the game. Lightly edited for language.
+
+- title: "[Blog] Don't Waste Your Back Pressure"
+  published_date: "2026-01-19T05:56:00+00:00"
+  blog_url: https://banay.me/dont-waste-your-backpressure/
+  was_edited: false
+  author: Banay
+  article_date: "2025"
+  tech: Claude, OpenAI TTS (cedar)
+  description: |
+    Back pressure principles for AI agents. Successful agent applications
+    share a pattern of handling back pressure effectively to maintain
+    quality and avoid wasted work.
+
+- title: "[Blog] Common Pitfalls When Building Generative AI Applications"
+  published_date: "2026-01-19T07:10:00+00:00"
+  blog_url: https://huyenchip.com/2025/01/16/ai-engineering-pitfalls.html
+  was_edited: false
+  author: Chip Huyen
+  article_date: "2025-01-16"
+  tech: Claude, OpenAI TTS (cedar)
+  description: |
+    Chip Huyen shares lessons from building AI applications at scale.
+    Covers common mistakes in prompt engineering, evaluation, RAG systems,
+    and production deployment - with practical solutions for each pitfall.
+
+- title: "[Blog] Agents"
+  published_date: "2026-01-19T07:11:00+00:00"
+  blog_url: https://huyenchip.com/2025/01/07/agents.html
+  was_edited: false
+  author: Chip Huyen
+  article_date: "2025-01-07"
+  tech: Claude, OpenAI TTS (cedar)
+  description: |
+    A comprehensive deep dive into AI agents by Chip Huyen. Explores agent
+    architectures, workflows, memory systems, tool use, and the engineering
+    challenges of building reliable autonomous systems at scale.
+
+- title: "[Blog] Agent Psychosis: Are We Going Insane?"
+  published_date: "2026-01-19T21:15:00-05:00"
+  blog_url: https://lucumr.pocoo.org/2026/1/18/agent-psychosis/
+  was_edited: true
+  author: Armin Ronacher
+  article_date: "2026-01-18"
+  tech: Claude, OpenAI TTS (marin intro + cedar)
+  description: |
+    Armin Ronacher explores the psychological effects of AI agent addiction
+    on developers. Covers parasocial relationships with AI, maintainer burden
+    from AI-generated PRs, the dopamine loop of agent coding, and critiques
+    of "slop loop" development patterns. Lightly edited for language.
