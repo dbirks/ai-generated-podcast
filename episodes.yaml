@@ -309,3 +309,16 @@
     on developers. Covers parasocial relationships with AI, maintainer burden
     from AI-generated PRs, the dopamine loop of agent coding, and critiques
     of "slop loop" development patterns. Lightly edited for language.
+
+- title: "[Document] Claude's Constitution"
+  published_date: "2026-01-23T14:30:00-05:00"
+  blog_url: https://www.anthropic.com/constitution
+  was_edited: false
+  author: Anthropic
+  article_date: null
+  tech: Claude, OpenAI TTS (marin intro + cedar)
+  description: |
+    The complete text of Claude's Constitution from Anthropic. A comprehensive
+    guide covering Claude's core values, ethical principles, and behavioral
+    guidelines including safety, helpfulness, honesty, and navigating complex
+    situations across operators and users. Duration: 2 hours 50 minutes.
