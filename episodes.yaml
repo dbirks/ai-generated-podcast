@@ -317,6 +317,7 @@
   author: Anthropic
   article_date: null
   tech: Claude, OpenAI TTS (marin intro + cedar)
+  audio_file: claudes_constitution.m4a
   description: |
     The complete text of Claude's Constitution from Anthropic. A comprehensive
     guide covering Claude's core values, ethical principles, and behavioral
