@@ -322,3 +322,15 @@
     guide covering Claude's core values, ethical principles, and behavioral
     guidelines including safety, helpfulness, honesty, and navigating complex
     situations across operators and users. Duration: 2 hours 50 minutes.
+
+- title: "[Blog] Gas Town's Agent Patterns, Design Bottlenecks, and Vibecoding at Scale"
+  published_date: "2026-01-23T15:00:00-05:00"
+  blog_url: https://maggieappleton.com/gastown
+  was_edited: true
+  author: Maggie Appleton
+  article_date: null
+  tech: Claude, OpenAI TTS (marin intro + cedar)
+  description: |
+    Maggie Appleton analyzes Steve Yegge's Gas Town agent orchestration system.
+    Explores design patterns, bottlenecks of vibecoding at scale, agent coordination,
+    and the implications for future software development. Lightly edited for language.
