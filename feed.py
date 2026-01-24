@@ -26,6 +26,7 @@ class Episode:
     author: str | None = None
     article_date: str | None = None
     tech: str | None = None
+    audio_file: str | None = None  # Custom blob filename (e.g., "episode_name.m4a")
 
 
 def load_episodes(path: Path = Path("episodes.yaml")) -> list[Episode]:
@@ -49,6 +50,7 @@ def load_episodes(path: Path = Path("episodes.yaml")) -> list[Episode]:
             author=item.get("author"),
             article_date=item.get("article_date"),
             tech=item.get("tech"),
+            audio_file=item.get("audio_file"),
         ))
 
     return episodes
@@ -125,16 +127,21 @@ def generate_feed(episodes: list[Episode] | None = None) -> str:
     fg.podcast.itunes_image(logo_url)
 
     for episode in episodes:
-        # Strip prefix from title for blob filename
-        # Prefixes: [Blog], [NotebookLM], [Document], [Tidbit], [Short]
-        blob_filename = episode.title
-        for prefix in ["[Blog] ", "[NotebookLM] ", "[Document] ", "[Tidbit] ", "[Short] "]:
-            if blob_filename.startswith(prefix):
-                blob_filename = blob_filename[len(prefix):]
-                break
+        # Use custom audio_file if specified, otherwise generate from title
+        if episode.audio_file:
+            # Custom filename provided (should be lowercase_with_underscores.m4a)
+            encoded_filename = quote(episode.audio_file)
+        else:
+            # Strip prefix from title for blob filename
+            # Prefixes: [Blog], [NotebookLM], [Document], [Tidbit], [Short]
+            blob_filename = episode.title
+            for prefix in ["[Blog] ", "[NotebookLM] ", "[Document] ", "[Tidbit] ", "[Short] "]:
+                if blob_filename.startswith(prefix):
+                    blob_filename = blob_filename[len(prefix):]
+                    break
 
-        # URL-encode the filename (spaces become %20, etc.)
-        encoded_filename = quote(f"{blob_filename}.m4a")
+            # URL-encode the filename (spaces become %20, etc.)
+            encoded_filename = quote(f"{blob_filename}.m4a")
         url = f"{BLOB_BASE_URL}/{encoded_filename}"
 
         fe = fg.add_entry()

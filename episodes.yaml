@@ -329,7 +329,8 @@
   was_edited: true
   author: Maggie Appleton
   article_date: null
-  tech: Claude, OpenAI TTS (marin intro + cedar)
+  tech: Claude, OpenAI TTS (cedar intro + marin main)
+  audio_file: gas_town_agent_patterns.m4a
   description: |
     Maggie Appleton analyzes Steve Yegge's Gas Town agent orchestration system.
     Explores design patterns, bottlenecks of vibecoding at scale, agent coordination,

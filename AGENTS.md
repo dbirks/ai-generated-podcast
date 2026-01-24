@@ -19,12 +19,18 @@ grep -i -E "fuck|shit|damn|bitch|bastard" temp/article.txt
 # 4. Generate TTS (auto-chunks, uses cedar voice by default)
 uv run main.py tts temp/article.txt -o "temp/Episode Title.mp3"
 
-# 4a. Optional: Use intro feature (Marin voice for intro, Cedar for main)
-uv run main.py tts temp/article.txt -o "temp/Episode Title.mp3" \
+# 4a. Optional: Use intro feature (default: Marin intro + Cedar main)
+uv run main.py tts temp/article.txt -o "temp/episode_title.mp3" \
   --intro "Welcome to the AI Generated Podcast. This episode covers..."
 
+# 4b. Optional: Swap voices (Cedar intro + Marin main)
+uv run main.py tts temp/article.txt -o "temp/episode_title.mp3" \
+  --intro "Welcome to..." --intro-voice cedar --main-voice marin
+
 # 5. Upload to Azure
-uv run main.py upload "temp/Episode Title.mp3" --name "Episode Title.m4a"
+#    IMPORTANT: Use lowercase_with_underscores for blob names (no spaces, quotes, or special chars)
+#    This avoids URL encoding issues in RSS feeds
+uv run main.py upload "temp/Episode Title.mp3" --name "episode_title.m4a"
 
 # 6. Add to episodes.yaml (scrape command prints metadata)
 #    IMPORTANT: Append new episodes to the BOTTOM of the file (chronological order)
@@ -111,9 +117,13 @@ This helps users quickly identify the episode source in podcast apps.
   author: Author Name
   article_date: "2026-01-08"
   tech: Claude, OpenAI TTS (cedar)
+  audio_file: episode_title.m4a  # Optional: custom blob filename (lowercase_underscores)
   description: |
     2-4 line summary of the episode content.
 ```
+
+**Note:** If `audio_file` is specified, it overrides the auto-generated blob filename from the title.
+Use lowercase_with_underscores naming (e.g., `gas_town_agent_patterns.m4a`).
 
 ## Automated Episode Generation (GitHub Actions)
 
