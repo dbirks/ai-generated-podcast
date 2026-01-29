@@ -336,3 +336,44 @@
     Maggie Appleton analyzes Steve Yegge's Gas Town agent orchestration system.
     Explores design patterns, bottlenecks of vibecoding at scale, agent coordination,
     and the implications for future software development. Lightly edited for language.
+
+- title: "[Blog] Long-running Agentic Work with Beads"
+  published_date: "2026-01-29T10:00:00-05:00"
+  blog_url: https://www.dolthub.com/blog/2026-01-27-long-running-agentic-work-with-beads/
+  was_edited: true
+  author: Dustin Brown
+  article_date: "2026-01-27"
+  tech: Claude, OpenAI TTS (marin intro + cedar)
+  audio_file: long_running_agentic_work_with_beads.m4a
+  description: |
+    Dustin Brown describes how Beads, a persistent memory system for coding agents,
+    enabled refactoring 315 frontend files over a 12-hour session with minimal human
+    intervention. Demonstrates how Beads transforms long-running agentic tasks into
+    manageable, supervised workflows by maintaining focus across context compaction cycles.
+
+- title: "[Thread] The Phase Shift in Software Engineering"
+  published_date: "2026-01-29T10:10:00-05:00"
+  blog_url: https://x.com/karpathy/status/2015883857489522876
+  was_edited: false
+  author: Andrej Karpathy
+  article_date: "2025-12"
+  tech: Claude, OpenAI TTS (marin intro + cedar)
+  audio_file: karpathy_ai_coding_phase_shift.m4a
+  description: |
+    Andrej Karpathy shares his experience shifting from 80% manual coding to 80% AI agent
+    coding in just a few weeks. He describes how LLM agent capabilities crossed a threshold
+    of coherence around December 2025, causing a phase shift in software engineering—the
+    biggest change to his coding workflow in two decades of programming.
+
+- title: "[Blog] Doing the Thing is Doing the Thing"
+  published_date: "2026-01-29T10:20:00-05:00"
+  blog_url: https://www.softwaredesign.ing/blog/doing-the-thing-is-doing-the-thing
+  was_edited: false
+  author: Prakhar Gupta
+  article_date: "2026-01-25"
+  tech: Claude, OpenAI TTS (marin intro + cedar)
+  audio_file: doing_the_thing_is_doing_the_thing.m4a
+  description: |
+    Prakhar Gupta contrasts preparation activities like thinking, planning, and consuming
+    content with actual execution. The post emphasizes that failing while doing the thing
+    is still doing the thing—an exhortation to abandon perfectionism and simply begin.
