@@ -262,5 +262,53 @@ def scrape(
         rprint(f"  article_date: \"{metadata['date']}\"")
 
 
+@app.command()
+def verify():
+    """Verify all episode audio URLs are reachable (HTTP 200)."""
+    import urllib.request
+    from urllib.parse import quote
+
+    episodes = load_episodes()
+    rprint(f"Verifying audio URLs for {len(episodes)} episodes...\n")
+
+    errors = []
+    for ep in episodes:
+        # Reproduce the same URL logic as feed.py
+        if ep.audio_file:
+            encoded_filename = quote(ep.audio_file)
+        else:
+            blob_filename = ep.title
+            for prefix in ["[Blog] ", "[NotebookLM] ", "[Document] ", "[Tidbit] ", "[Short] ", "[Thread] "]:
+                if blob_filename.startswith(prefix):
+                    blob_filename = blob_filename[len(prefix):]
+                    break
+            encoded_filename = quote(f"{blob_filename}.m4a")
+
+        url = f"{BLOB_BASE_URL}/{encoded_filename}"
+
+        try:
+            req = urllib.request.Request(url, method="HEAD")
+            resp = urllib.request.urlopen(req, timeout=10)
+            status = resp.status
+        except Exception as e:
+            status = getattr(e, "code", str(e))
+
+        if status == 200:
+            rprint(f"  [green]OK[/green]  {ep.title}")
+        else:
+            rprint(f"  [red]FAIL ({status})[/red]  {ep.title}")
+            rprint(f"       URL: {url}")
+            errors.append((ep.title, url, status))
+
+    rprint()
+    if errors:
+        rprint(f"[red bold]{len(errors)} broken URL(s)![/red bold]")
+        for title, url, status in errors:
+            rprint(f"  - {title}: {status}")
+        raise typer.Exit(code=1)
+    else:
+        rprint(f"[green bold]All {len(episodes)} URLs OK[/green bold]")
+
+
 if __name__ == "__main__":
     app()

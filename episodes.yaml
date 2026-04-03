@@ -256,6 +256,7 @@
   author: Charity Majors
   article_date: "2025"
   tech: Claude, OpenAI TTS (cedar)
+  audio_file: "You Had One Job - Twenty Years of DevOps.m4a"
   description: |
     The DevOps movement's twenty-year battle to connect developers with
     production failed—not due to lack of effort, but because the tools
@@ -304,6 +305,7 @@
   author: Armin Ronacher
   article_date: "2026-01-18"
   tech: Claude, OpenAI TTS (marin intro + cedar)
+  audio_file: Agent Psychosis Are We Going Insane.m4a
   description: |
     Armin Ronacher explores the psychological effects of AI agent addiction
     on developers. Covers parasocial relationships with AI, maintainer burden
