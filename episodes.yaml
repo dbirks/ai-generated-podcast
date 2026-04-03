@@ -399,6 +399,7 @@
   author: Steve Yegge
   article_date: "2026-04-03"
   tech: Claude, OpenAI TTS (cedar, marin intro)
+  audio_file: Gas Town From Clown Show to v1.m4a
   description: |
     Steve Yegge announces the v1.0 release of Gas Town and Beads.
     Covers the journey from chaotic early days to stable multi-agent
@@ -413,6 +414,7 @@
   author: Simon Willison
   article_date: "2026-02-23"
   tech: Claude, OpenAI TTS (marin, cedar intro)
+  audio_file: Agentic Engineering Patterns.m4a
   description: |
     Simon Willison writes about agentic engineering patterns, sharing
     insights from his experience building and documenting patterns for
@@ -436,6 +438,7 @@
   author: Simon Willison
   article_date: "2026-03-19"
   tech: Claude, OpenAI TTS (marin, cedar intro)
+  audio_file: OpenAI Acquiring Astral.m4a
   description: |
     Simon Willison shares his thoughts on OpenAI's acquisition of Astral,
     the company behind the popular Python tools uv, ruff, and ty.
@@ -447,6 +450,7 @@
   author: Simon Willison
   article_date: "2026-03-22"
   tech: Claude, OpenAI TTS (cedar, marin intro)
+  audio_file: Starlette 1.0 with Claude Skills.m4a
   description: |
     Simon Willison experiments with Starlette 1.0, exploring how Claude
     Code skills can be used to quickly build and iterate on web applications.
@@ -458,6 +462,7 @@
   author: Simon Willison
   article_date: "2026-03-27"
   tech: Claude, OpenAI TTS (marin, cedar intro)
+  audio_file: Vibe Coding SwiftUI.m4a
   description: |
     Simon Willison shares his experience vibe coding SwiftUI apps,
     finding that building native iOS applications with AI assistance
@@ -482,6 +487,7 @@
   author: Simon Willison
   article_date: "2026-04-02"
   tech: Claude, OpenAI TTS (marin, cedar intro)
+  audio_file: Agentic Engineering on Lennys Podcast.m4a
   description: |
     Simon Willison shares highlights from his conversation on Lenny's
     Podcast about agentic engineering, covering practical patterns for
@@ -495,6 +501,7 @@
   author: Simon Willison
   article_date: "2026-04-03"
   tech: Claude, OpenAI TTS (cedar, marin intro)
+  audio_file: Axios Supply Chain Attack.m4a
   description: |
     Simon Willison covers the Axios supply chain attack, which used
     individually targeted social engineering to compromise the popular
