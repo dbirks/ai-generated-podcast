@@ -377,3 +377,125 @@
     Prakhar Gupta contrasts preparation activities like thinking, planning, and consuming
     content with actual execution. The post emphasizes that failing while doing the thing
     is still doing the thing—an exhortation to abandon perfectionism and simply begin.
+
+- title: "[Blog] Vibe Maintainer"
+  published_date: "2026-04-03T18:30:00-04:00"
+  blog_url: https://steve-yegge.medium.com/vibe-maintainer-a2273a841040
+  was_edited: true
+  author: Steve Yegge
+  article_date: "2026-04-03"
+  tech: Claude, OpenAI TTS (marin, cedar intro)
+  description: |
+    Steve Yegge describes his radical approach to maintaining popular
+    open-source projects in the age of AI-generated pull requests.
+    Covers the PR Sheriff workflow, fix-merging, why saying yes to AI
+    beats traditional gatekeeping, and the Fork You problem.
+    Lightly edited for language.
+
+- title: "[Blog] Gas Town From Clown Show to v1.0"
+  published_date: "2026-04-03T18:20:00-04:00"
+  blog_url: https://steve-yegge.medium.com/gas-town-from-clown-show-to-v1-0-c239d9a407ec
+  was_edited: true
+  author: Steve Yegge
+  article_date: "2026-04-03"
+  tech: Claude, OpenAI TTS (cedar, marin intro)
+  description: |
+    Steve Yegge announces the v1.0 release of Gas Town and Beads.
+    Covers the journey from chaotic early days to stable multi-agent
+    orchestration, the Beads memory system backed by Dolt, the Mayor
+    abstraction, and the upcoming Gas City platform.
+    Lightly edited for language.
+
+- title: "[Blog] Writing about Agentic Engineering Patterns"
+  published_date: "2026-04-03T17:00:00-04:00"
+  blog_url: https://simonwillison.net/2026/Feb/23/agentic-engineering-patterns/
+  was_edited: false
+  author: Simon Willison
+  article_date: "2026-02-23"
+  tech: Claude, OpenAI TTS (marin, cedar intro)
+  description: |
+    Simon Willison writes about agentic engineering patterns, sharing
+    insights from his experience building and documenting patterns for
+    working with AI coding agents.
+
+- title: "[Blog] GPT-5.4 Mini and Nano"
+  published_date: "2026-04-03T17:10:00-04:00"
+  blog_url: https://simonwillison.net/2026/Mar/17/mini-and-nano/
+  was_edited: false
+  author: Simon Willison
+  article_date: "2026-03-17"
+  tech: Claude, OpenAI TTS (cedar, marin intro)
+  description: |
+    Simon Willison looks at GPT-5.4 mini and GPT-5.4 nano, OpenAI's
+    latest small models that can describe 76,000 photos for just $52.
+
+- title: "[Blog] Thoughts on OpenAI Acquiring Astral"
+  published_date: "2026-04-03T17:20:00-04:00"
+  blog_url: https://simonwillison.net/2026/Mar/19/openai-acquiring-astral/
+  was_edited: false
+  author: Simon Willison
+  article_date: "2026-03-19"
+  tech: Claude, OpenAI TTS (marin, cedar intro)
+  description: |
+    Simon Willison shares his thoughts on OpenAI's acquisition of Astral,
+    the company behind the popular Python tools uv, ruff, and ty.
+
+- title: "[Blog] Experimenting with Starlette 1.0"
+  published_date: "2026-04-03T17:30:00-04:00"
+  blog_url: https://simonwillison.net/2026/Mar/22/starlette/
+  was_edited: false
+  author: Simon Willison
+  article_date: "2026-03-22"
+  tech: Claude, OpenAI TTS (cedar, marin intro)
+  description: |
+    Simon Willison experiments with Starlette 1.0, exploring how Claude
+    Code skills can be used to quickly build and iterate on web applications.
+
+- title: "[Blog] Vibe Coding SwiftUI Apps"
+  published_date: "2026-04-03T17:40:00-04:00"
+  blog_url: https://simonwillison.net/2026/Mar/27/vibe-coding-swiftui/
+  was_edited: false
+  author: Simon Willison
+  article_date: "2026-03-27"
+  tech: Claude, OpenAI TTS (marin, cedar intro)
+  description: |
+    Simon Willison shares his experience vibe coding SwiftUI apps,
+    finding that building native iOS applications with AI assistance
+    is surprisingly fun and productive.
+
+- title: "[Blog] Mr. Chatterbox"
+  published_date: "2026-04-03T17:50:00-04:00"
+  blog_url: https://simonwillison.net/2026/Mar/30/mr-chatterbox/
+  was_edited: false
+  author: Simon Willison
+  article_date: "2026-03-30"
+  tech: Claude, OpenAI TTS (cedar, marin intro)
+  description: |
+    Simon Willison introduces Mr. Chatterbox, a weak Victorian-era
+    ethically trained language model that you can run on your own
+    computer. A look at small, specialized AI models.
+
+- title: "[Blog] Agentic Engineering on Lenny's Podcast"
+  published_date: "2026-04-03T18:00:00-04:00"
+  blog_url: https://simonwillison.net/2026/Apr/2/lennys-podcast/
+  was_edited: false
+  author: Simon Willison
+  article_date: "2026-04-02"
+  tech: Claude, OpenAI TTS (marin, cedar intro)
+  description: |
+    Simon Willison shares highlights from his conversation on Lenny's
+    Podcast about agentic engineering, covering practical patterns for
+    working with AI coding agents and the evolving landscape of
+    AI-assisted development.
+
+- title: "[Blog] The Axios Supply Chain Attack"
+  published_date: "2026-04-03T18:10:00-04:00"
+  blog_url: https://simonwillison.net/2026/Apr/3/supply-chain-social-engineering/
+  was_edited: false
+  author: Simon Willison
+  article_date: "2026-04-03"
+  tech: Claude, OpenAI TTS (cedar, marin intro)
+  description: |
+    Simon Willison covers the Axios supply chain attack, which used
+    individually targeted social engineering to compromise the popular
+    JavaScript library.
