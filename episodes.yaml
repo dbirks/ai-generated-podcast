@@ -508,3 +508,16 @@
     Simon Willison covers the Axios supply chain attack, which used
     individually targeted social engineering to compromise the popular
     JavaScript library.
+
+- title: "[Blog] A Succinct Puritan View of the Christian's Mission in Society"
+  published_date: "2026-04-05T12:00:00-04:00"
+  blog_url: https://joelbeeke.org/a-succint-puritan-view-of-the-christians-mission-in-society/
+  was_edited: false
+  author: Dr. Joel Beeke
+  article_date: "2023-09-13"
+  tech: Claude, OpenAI TTS (marin, cedar intro)
+  audio_file: A Succinct Puritan View of the Christians Mission in Society.m4a
+  description: |
+    Dr. Joel Beeke offers a succinct Puritan perspective on the Christian's
+    mission in society, drawing on Reformed theology to explore how believers
+    should engage with the world around them.
