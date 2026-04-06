@@ -106,6 +106,17 @@ def format_description(episode: Episode) -> str:
     return "\n".join(lines)
 
 
+def _get_content_length(url: str) -> int:
+    """HEAD-request a URL and return its Content-Length, or 0 on failure."""
+    import urllib.request
+    try:
+        req = urllib.request.Request(url, method="HEAD")
+        resp = urllib.request.urlopen(req, timeout=10)
+        return int(resp.headers.get("Content-Length", 0))
+    except Exception:
+        return 0
+
+
 def generate_feed(episodes: list[Episode] | None = None) -> str:
     """Generate RSS feed XML string."""
     if episodes is None:
@@ -133,9 +144,9 @@ def generate_feed(episodes: list[Episode] | None = None) -> str:
             encoded_filename = quote(episode.audio_file)
         else:
             # Strip prefix from title for blob filename
-            # Prefixes: [Blog], [NotebookLM], [Document], [Tidbit], [Short]
+            # Prefixes: [Blog], [NotebookLM], [Document], [Tidbit], [Short], [Thread]
             blob_filename = episode.title
-            for prefix in ["[Blog] ", "[NotebookLM] ", "[Document] ", "[Tidbit] ", "[Short] "]:
+            for prefix in ["[Blog] ", "[NotebookLM] ", "[Document] ", "[Tidbit] ", "[Short] ", "[Thread] "]:
                 if blob_filename.startswith(prefix):
                     blob_filename = blob_filename[len(prefix):]
                     break
@@ -144,12 +155,14 @@ def generate_feed(episodes: list[Episode] | None = None) -> str:
             encoded_filename = quote(f"{blob_filename}.m4a")
         url = f"{BLOB_BASE_URL}/{encoded_filename}"
 
+        # Get actual file size via HEAD request
+        file_size = _get_content_length(url)
+
         fe = fg.add_entry()
         fe.id(url)
         fe.title(episode.title)
         fe.description(format_description(episode))
-        # Note: length=0 is acceptable for RSS, podcast apps will handle it
-        fe.enclosure(url, 0, "audio/mp4")
+        fe.enclosure(url, file_size, "audio/mpeg")
         fe.published(episode.published_date)
 
     return fg.rss_str(pretty=True).decode("utf-8")
