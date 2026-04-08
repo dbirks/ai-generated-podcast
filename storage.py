@@ -47,7 +47,7 @@ def upload_blob(local_path: Path, blob_name: str | None = None) -> str:
     from azure.storage.blob import ContentSettings
     suffix = local_path.suffix.lower()
     content_type = {
-        ".m4a": "audio/x-m4a",
+        ".m4a": "audio/mpeg",  # Our .m4a files are actually MP3 (OpenAI TTS output)
         ".mp3": "audio/mpeg",
         ".mp4": "audio/mp4",
     }.get(suffix, "application/octet-stream")

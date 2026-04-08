@@ -312,8 +312,10 @@ def verify():
 
 @app.command("fix-content-types")
 def fix_content_types():
-    """Fix content-type on all Azure blobs from application/octet-stream to audio/x-m4a."""
+    """Detect actual audio codec of each blob and set correct content-type."""
     import os
+    import subprocess
+    import tempfile
     from urllib.parse import quote
     from azure.storage.blob import BlobServiceClient, ContentSettings
     from dotenv import load_dotenv
@@ -327,7 +329,7 @@ def fix_content_types():
     container_client = blob_service.get_container_client("aigeneratedpodcast")
 
     episodes = load_episodes()
-    rprint(f"Fixing content-type for {len(episodes)} blobs...\n")
+    rprint(f"Detecting codec and fixing content-type for {len(episodes)} blobs...\n")
 
     fixed = 0
     for ep in episodes:
@@ -343,14 +345,33 @@ def fix_content_types():
 
         blob_client = container_client.get_blob_client(blob_name)
         try:
+            # Download first 64KB to detect codec
+            stream = blob_client.download_blob(offset=0, length=65536)
+            header_bytes = stream.readall()
+
+            # Probe with ffprobe
+            result = subprocess.run(
+                ["ffprobe", "-v", "error", "-show_entries", "stream=codec_name",
+                 "-of", "csv=p=0", "-"],
+                input=header_bytes, capture_output=True, timeout=10,
+            )
+            codec = result.stdout.decode().strip().split("\n")[0]
+
+            if codec == "mp3":
+                correct_type = "audio/mpeg"
+            elif codec in ("aac", "alac"):
+                correct_type = "audio/x-m4a"
+            else:
+                correct_type = "audio/mpeg"  # default to mpeg for safety
+
             props = blob_client.get_blob_properties()
             current = props.content_settings.content_type
-            if current != "audio/x-m4a":
-                blob_client.set_http_headers(ContentSettings(content_type="audio/x-m4a"))
-                rprint(f"  [yellow]Fixed[/yellow] {blob_name}: {current} → audio/x-m4a")
+            if current != correct_type:
+                blob_client.set_http_headers(ContentSettings(content_type=correct_type))
+                rprint(f"  [yellow]Fixed[/yellow] {blob_name}: codec={codec}, {current} → {correct_type}")
                 fixed += 1
             else:
-                rprint(f"  [green]OK[/green]    {blob_name}")
+                rprint(f"  [green]OK[/green]    {blob_name} (codec={codec}, {current})")
         except Exception as e:
             rprint(f"  [red]ERROR[/red] {blob_name}: {e}")
 

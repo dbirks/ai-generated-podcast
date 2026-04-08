@@ -106,15 +106,17 @@ def format_description(episode: Episode) -> str:
     return "\n".join(lines)
 
 
-def _get_content_length(url: str) -> int:
-    """HEAD-request a URL and return its Content-Length, or 0 on failure."""
+def _head_request(url: str) -> tuple[int, str]:
+    """HEAD-request a URL and return (Content-Length, Content-Type)."""
     import urllib.request
     try:
         req = urllib.request.Request(url, method="HEAD")
         resp = urllib.request.urlopen(req, timeout=10)
-        return int(resp.headers.get("Content-Length", 0))
+        length = int(resp.headers.get("Content-Length", 0))
+        content_type = resp.headers.get("Content-Type", "audio/mpeg")
+        return length, content_type
     except Exception:
-        return 0
+        return 0, "audio/mpeg"
 
 
 def generate_feed(episodes: list[Episode] | None = None) -> str:
@@ -155,14 +157,14 @@ def generate_feed(episodes: list[Episode] | None = None) -> str:
             encoded_filename = quote(f"{blob_filename}.m4a")
         url = f"{BLOB_BASE_URL}/{encoded_filename}"
 
-        # Get actual file size via HEAD request
-        file_size = _get_content_length(url)
+        # Get actual file size and content type via HEAD request
+        file_size, content_type = _head_request(url)
 
         fe = fg.add_entry()
         fe.id(url)
         fe.title(episode.title)
         fe.description(format_description(episode))
-        fe.enclosure(url, file_size, "audio/x-m4a")
+        fe.enclosure(url, file_size, content_type)
         fe.published(episode.published_date)
 
     return fg.rss_str(pretty=True).decode("utf-8")
