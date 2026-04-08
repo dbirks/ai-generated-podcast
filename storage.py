@@ -43,8 +43,21 @@ def upload_blob(local_path: Path, blob_name: str | None = None) -> str:
         blob=blob_name,
     )
 
+    # Set content type based on file extension
+    from azure.storage.blob import ContentSettings
+    suffix = local_path.suffix.lower()
+    content_type = {
+        ".m4a": "audio/x-m4a",
+        ".mp3": "audio/mpeg",
+        ".mp4": "audio/mp4",
+    }.get(suffix, "application/octet-stream")
+
     with open(local_path, "rb") as f:
-        blob_client.upload_blob(f, overwrite=True)
+        blob_client.upload_blob(
+            f,
+            overwrite=True,
+            content_settings=ContentSettings(content_type=content_type),
+        )
 
     url = f"{BLOB_BASE_URL}/{blob_name}"
     print(f"  URL: {url}")

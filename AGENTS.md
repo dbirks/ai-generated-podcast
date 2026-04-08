@@ -34,9 +34,10 @@ uv run main.py upload "temp/Episode Title.mp3" --name "episode_title.m4a"
 
 # 6. Add to episodes.yaml (scrape command prints metadata)
 #    IMPORTANT: Append new episodes to the BOTTOM of the file (chronological order)
-# 7. Regenerate feed and push
+# 7. Regenerate feed, verify URLs, and push
 #    Note: rss.xml is gitignored - only commit episodes.yaml, feed regenerates on deploy
-uv run main.py feed && git add episodes.yaml && git commit -m "Add Episode Title" && git push
+#    IMPORTANT: ALWAYS run verify before pushing to catch blob name mismatches
+uv run main.py feed && uv run main.py verify && git add episodes.yaml && git commit -m "Add Episode Title" && git push
 ```
 
 ## Medium Articles (Cloudflare blocked)

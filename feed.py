@@ -162,7 +162,7 @@ def generate_feed(episodes: list[Episode] | None = None) -> str:
         fe.id(url)
         fe.title(episode.title)
         fe.description(format_description(episode))
-        fe.enclosure(url, file_size, "audio/mpeg")
+        fe.enclosure(url, file_size, "audio/x-m4a")
         fe.published(episode.published_date)
 
     return fg.rss_str(pretty=True).decode("utf-8")

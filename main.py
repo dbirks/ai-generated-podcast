@@ -310,5 +310,52 @@ def verify():
         rprint(f"[green bold]All {len(episodes)} URLs OK[/green bold]")
 
 
+@app.command("fix-content-types")
+def fix_content_types():
+    """Fix content-type on all Azure blobs from application/octet-stream to audio/x-m4a."""
+    import os
+    from urllib.parse import quote
+    from azure.storage.blob import BlobServiceClient, ContentSettings
+    from dotenv import load_dotenv
+
+    load_dotenv()
+    connection_string = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
+    if not connection_string:
+        raise typer.Exit("AZURE_STORAGE_CONNECTION_STRING not set")
+
+    blob_service = BlobServiceClient.from_connection_string(connection_string)
+    container_client = blob_service.get_container_client("aigeneratedpodcast")
+
+    episodes = load_episodes()
+    rprint(f"Fixing content-type for {len(episodes)} blobs...\n")
+
+    fixed = 0
+    for ep in episodes:
+        if ep.audio_file:
+            blob_name = ep.audio_file
+        else:
+            blob_name = ep.title
+            for prefix in ["[Blog] ", "[NotebookLM] ", "[Document] ", "[Tidbit] ", "[Short] ", "[Thread] ", "[PDF] "]:
+                if blob_name.startswith(prefix):
+                    blob_name = blob_name[len(prefix):]
+                    break
+            blob_name = f"{blob_name}.m4a"
+
+        blob_client = container_client.get_blob_client(blob_name)
+        try:
+            props = blob_client.get_blob_properties()
+            current = props.content_settings.content_type
+            if current != "audio/x-m4a":
+                blob_client.set_http_headers(ContentSettings(content_type="audio/x-m4a"))
+                rprint(f"  [yellow]Fixed[/yellow] {blob_name}: {current} → audio/x-m4a")
+                fixed += 1
+            else:
+                rprint(f"  [green]OK[/green]    {blob_name}")
+        except Exception as e:
+            rprint(f"  [red]ERROR[/red] {blob_name}: {e}")
+
+    rprint(f"\n[green bold]Done! Fixed {fixed} blob(s)[/green bold]")
+
+
 if __name__ == "__main__":
     app()
