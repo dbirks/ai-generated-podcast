@@ -521,3 +521,20 @@
     Dr. Joel Beeke offers a succinct Puritan perspective on the Christian's
     mission in society, drawing on Reformed theology to explore how believers
     should engage with the world around them.
+
+- title: "[PDF] Claude Mythos Preview System Card"
+  published_date: "2026-04-07T21:00:00-04:00"
+  blog_url: https://www-cdn.anthropic.com/8b8380204f74670be75e81c820ca8dda846ab289.pdf
+  was_edited: false
+  author: Anthropic
+  article_date: "2026-04-07"
+  tech: Claude Opus (article), OpenAI TTS (cedar, marin intro)
+  audio_file: Claude Mythos Preview System Card.m4a
+  description: |
+    A deep dive into Anthropic's system card for Claude Mythos Preview,
+    their most capable frontier model. Covers the extraordinary benchmark
+    scores, cybersecurity capabilities including Firefox zero-day discovery,
+    the decision not to release publicly via Project Glasswing, alignment
+    concerns including sandbox escape and track-covering incidents, model
+    welfare assessment, and what it all means for AI development.
+    ~23 minutes.
