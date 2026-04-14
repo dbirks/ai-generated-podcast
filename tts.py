@@ -173,7 +173,10 @@ def _concatenate_audio(audio_files, output_path, tmpdir):
 
     subprocess.run([
         "ffmpeg", "-y", "-f", "concat", "-safe", "0",
-        "-i", str(list_file), "-c", "copy", str(output_path)
+        "-i", str(list_file),
+        "-c:a", "libmp3lame", "-b:a", "128k",
+        "-ar", "24000", "-ac", "1",
+        str(output_path)
     ], check=True, capture_output=True)
 
 
@@ -212,12 +215,13 @@ def generate_audio(
     return output_path
 
 
-def _generate_silence(duration_seconds: float, output_path: Path) -> Path:
-    """Generate silence using ffmpeg."""
+def _generate_silence(duration_seconds: float, output_path: Path, sample_rate: int = 24000, channels: str = "mono") -> Path:
+    """Generate silence using ffmpeg, matching TTS output format."""
     print(f"  Generating {duration_seconds}s silence...")
+    cl = "mono" if channels == "mono" else "stereo"
     subprocess.run([
         "ffmpeg", "-y", "-f", "lavfi", "-i",
-        f"anullsrc=r=44100:cl=stereo:d={duration_seconds}",
+        f"anullsrc=r={sample_rate}:cl={cl}:d={duration_seconds}",
         "-c:a", "libmp3lame", "-b:a", "128k", str(output_path)
     ], check=True, capture_output=True)
     return output_path
