@@ -551,3 +551,16 @@
     attention backends (FlashAttention-4), concurrency tuning, prefix
     caching, speculative decoding, and practical sizing for 5090-class GPUs.
     Originally a ChatGPT deep research report.
+
+- title: "[Blog] The DuckLake Manifesto"
+  published_date: "2026-04-13T21:30:00-04:00"
+  blog_url: https://ducklake.select/manifesto/
+  was_edited: false
+  tech: OpenAI TTS (cedar, marin intro)
+  audio_file: ducklake_manifesto.m4a
+  description: |
+    The DuckLake Manifesto proposes SQL as a lakehouse format, arguing that
+    existing table formats like Iceberg add unnecessary complexity. Built on
+    DuckDB, DuckLake stores catalog metadata in a SQL database while keeping
+    data in Parquet files, offering a simpler alternative to the current
+    lakehouse stack.
