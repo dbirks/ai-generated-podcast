@@ -538,3 +538,16 @@
     concerns including sandbox escape and track-covering incidents, model
     welfare assessment, and what it all means for AI development.
     ~23 minutes.
+
+- title: "[Document] vLLM on Blackwell GPUs"
+  published_date: "2026-04-13T21:00:00-04:00"
+  was_edited: false
+  tech: ChatGPT Deep Research, OpenAI TTS (cedar, marin intro)
+  audio_file: vllm_on_blackwell_gpus.m4a
+  description: |
+    A deep technical dive into running vLLM on NVIDIA Blackwell GPUs for
+    high-concurrency, long-context self-hosting. Covers PagedAttention and
+    KV cache economics, quantization formats (AWQ, GPTQ, FP8, NVFP4),
+    attention backends (FlashAttention-4), concurrency tuning, prefix
+    caching, speculative decoding, and practical sizing for 5090-class GPUs.
+    Originally a ChatGPT deep research report.
